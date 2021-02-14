@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Cairo&display=swap');
+
+.app {
+	font-family: cairo;
+    background-color: #f4f7ff;
+}
+
+.v-list-group
+	.v-list-group__header
+	.v-list-item__icon.v-list-group__header__append-icon {
+	min-width: 0px;
+}
+
+.v-application--is-rtl
+	.v-list-group--no-action
+	> .v-list-group__items
+	> .v-list-item {
+	padding-right: 30px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px e2e2e2;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #e2e2e2;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #e2e2e2;
+}
+
+
