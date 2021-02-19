@@ -21,6 +21,14 @@ const routes = [
         }
     },
     {
+        path: "/employe",
+        name: "أدارة الموظفين",
+        component: () => import("../components/Employe.vue"),
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
         path: "/Login",
         name: "login",
         component: () => import("../views/Login.vue"),

@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
-import '../style/style.scss';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import Vue from "vue";
+import Vuetify from "vuetify/lib";
+import "../style/style.scss";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 Vue.use(Vuetify);
 
@@ -13,14 +13,28 @@ export default new Vuetify({
     theme: {
         themes: {
             light: {
-                primary: "#f6b93b",
-                secondary: "#2196F3",
-                third: "#3F3D56",
-                accent: "#F8F8F8",
-                success: "#218c74",
+                primary: "#4e89ae",
+                secondary: "#526C83",
+                third: "#4e89ae",
+                accent: "#ed6663",
+                success: "#4CAF50",
                 error: "#D32F2F",
-                info: "#F2B43C"
+                info: "#2196F3",
+                bluegrey: "#F5F5F5",
+                background: "#f7f9fd"
+            },
+            dark: {
+                primary: "#4e89ae",
+                secondary: "#e74c3c",
+                third: "#E91E63",
+                accent: "#E91E63",
+                success: "#4CAF50",
+                error: "#E91E63",
+                info: "#4e89ae",
+                bluegrey: "#424242",
+                background: "#2f3640"
             }
-        }
+        },
+        options: { customProperties: true }
     }
 });

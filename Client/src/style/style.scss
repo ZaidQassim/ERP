@@ -38,4 +38,21 @@
     background: #e2e2e2;
 }
 
+.v-text-field--outlined fieldset {
+    border: 1px solid #e0e0e0 ;
+}
+
+.v-stepper {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.v-stepper__header {
+    height: 50px;
+    box-shadow: none;
+}
+
+.v-stepper__step {
+    padding: 5px;
+}
 

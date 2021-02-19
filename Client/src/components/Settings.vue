@@ -1,55 +1,43 @@
 <template>
     <div>
-        <!-- user profile  -->
-        <v-menu
-            :nudge-width="200"
-            offset-y
-            elevation="0">
-            <template v-slot:activator="{ on, attrs }" class="pl-2">
-                <div class="d-flex" v-bind="attrs" v-on="on">
-                    <p class="mt-4 ml-3">{{ userInfo.knownAs }}</p>
-                    <img src="../assets/img/user.svg" alt="John" width="30" />
-                </div>
+        <!-- setting   -->
+        <v-menu :nudge-width="200" offset-y elevation="0" :close-on-content-click="false">
+            <template v-slot:activator="{ on, attrs }">
+                <span v-bind="attrs" v-on="on" class="ml-2">
+                    <v-btn icon>
+                        <v-icon>
+                            mdi-cog-outline
+                        </v-icon>
+                    </v-btn>
+                </span>
             </template>
 
-            <v-card class="text-center" width="400" tile elevation="0">
+            <v-card class="text-center" width="450">
                 <v-container>
                     <v-img
                         class="mx-auto"
-                        src="../assets/img/user.svg"
-                        alt="zaid"
-                        width="90"
-                    >
+                        src="../assets/erp-system.jpg"
+                        width="120">
                     </v-img>
-                    <h3 class="text-center">{{ userInfo.knownAs }}</h3>
+                    <h3 class="text-center">إعــــدادات النظــام </h3>
                     <v-card-text>
-                        <div class="grey--text mt-n2">
-                            {{ userInfo.email }}
-                        </div>
                         <div>
-                            <div class="text-right my-6">
-                                <v-btn
-                                    @click="history()"
-                                    text
-                                    outlined
-                                    block
-                                    rounded>
-                                    سجل أحداث
-                                </v-btn>
-                            </div>
-                            <div>
-                               --------------------------
-                            </div>
+                            <v-switch
+                                v-model="$vuetify.theme.dark"
+                                inset
+                                class="ml-3"
+                                :label="
+                                    $vuetify.theme.dark ? 'مظهر فاتح' : 'مظهر داكن'"
+                                persistent-hint
+                                hide-details>
+                            </v-switch>
                         </div>
                     </v-card-text>
 
                     <v-divider></v-divider>
 
-                    <div class="pa-6    ">
-                        <v-btn depressed outlined plain @click="logout()">
-                            تسجيل خروج
-                            <v-icon class="mr-2">power_settings_new</v-icon>
-                        </v-btn>
+                    <div class="pa-6">
+                       
                     </div>
 
                     <v-divider></v-divider>

@@ -1,7 +1,16 @@
 <template>
-    <v-app class="app">
+    <v-app
+        class="app"
+        :style="{ background: $vuetify.theme.themes[theme].background }">
         <layout />
+
         <v-main>
+            <v-progress-linear
+                color=""
+                indeterminate
+                reverse
+            ></v-progress-linear>
+
             <v-container fluid>
                 <transition
                     name="router-anim"
@@ -11,34 +20,45 @@
             </v-container>
         </v-main>
 
-
-        <v-snackbar 
+        <v-snackbar
             v-model="snackbar.showing"
             :timeout="3000"
-            left 
-            :color="snackbar.color">
-                {{ snackbar.text }}
+            left
+            :color="snackbar.color"
+        >
+            {{ snackbar.text }}
             <template v-slot:action="{ attrs }">
-                <v-btn color="blue" text v-bind="attrs" @click="snackbar.vshowing = false" >
-                   Close
+                <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar.vshowing = false"
+                >
+                    Close
                 </v-btn>
             </template>
         </v-snackbar>
-
-
     </v-app>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 import layout from "./components/layout";
 export default {
+    data() {
+        return {
+            loading: false
+        };
+    },
     components: {
         layout
     },
     computed: {
-        ...mapState(["snackbar"])
-    },
+        ...mapState(["snackbar"]),
+        theme() {
+            return this.$vuetify.theme.dark ? "dark" : "light";
+        }
+    }
 };
 </script>
 
@@ -55,9 +75,7 @@ export default {
     opacity: 0;
 }
 
-#app {
-    background: #f4f7ff;
-}
-
-
+/* #app {
+    background: #f7f9fd;
+} */
 </style>

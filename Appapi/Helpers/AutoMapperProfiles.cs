@@ -29,7 +29,10 @@ namespace Appapi.Helpers
 
             // employe
             CreateMap<EmployeForAddDto, Employe>();
-            CreateMap<Employe, EmployeForListDto>();
+            CreateMap<Employe, EmployeForListDto>()
+                .ForMember(dest => dest.Age, opt =>
+                    opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+
             CreateMap<Employe, EmployeForDetailsDto>();
 
             // employe Attachment

@@ -7,7 +7,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         snackbar: {},
-        userId: localStorage.getItem("userID")
+        userId: localStorage.getItem("userID"),
+        loading: false
     },
 
     getters: {},
@@ -15,15 +16,18 @@ const store = new Vuex.Store({
     mutations: {
         SET_SNACKBAR(state, snackbar) {
             state.snackbar = snackbar;
+        },
+        SET_LOADING(state, loading) {
+            state.loading = loading;
         }
     },
 
     actions: {
         setSnackbar({ commit }, snackbar) {
             snackbar.showing = true;
-            snackbar.color = snackbar.color || "#424242";
+            snackbar.color = snackbar.color || "#43658b";
             commit("SET_SNACKBAR", snackbar);
-        }
+        },
     }
 });
 

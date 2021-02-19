@@ -13,14 +13,13 @@ namespace Appapi.Dtos.Employe
         public string MotherSname { get; set; }
         public string MotherTname { get; set; }
         public string Family { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public int Age { get; set; }
         public DateTime DateOfStartWork { get; set; }
         public DateTime DateofSigningContract { get; set; }
         public bool Gender { get; set; }
         public int State { get; set; }
         public bool IsDelete { get; set; }
         public DateTime Created { get; set; }
-
 
         // EmployeAttachmentForListDto
     }

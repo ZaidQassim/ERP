@@ -1,78 +1,77 @@
 <template>
     <div>
-        <div>
-            <v-card
-                width="420"
-                class="pa-6 mt-10 mx-auto rounded-lg"
-                elevation="6">
-                <v-card flat class="d-flex justify-center">
-                    <div>
-                        <v-img width="130" src="../assets/logo.jpg" />
-                    </div>
-                </v-card>
+        <v-row no-gutters>
+            <v-col cols="12" md="6" style="margin: auto;">
+                <v-row align="center" justify="center">
+                    <v-card width="450" flat tile class="pa-6 mt-10 mx-auto">
+                        <v-card flat class="d-flex justify-center">
+                            <div>
+                                <v-img width="130" src="../assets/logo-login.png" />
+                            </div>
+                        </v-card>
 
-                <v-card-title>
-                    <h4>تسجيل دخول</h4>
-                </v-card-title>
-                <v-card-text class="mt-n3">
-                    مرحبًا بك في نظام إدارة المستندات
-                </v-card-text>
+                        <v-card-title>
+                            <h4>تسجيل دخول</h4>
+                        </v-card-title>
+                        <v-card-text class="mt-n3">
+                            مرحبًا بك في نظام إدارة تخطيط موارد المؤسسات
+                        </v-card-text>
 
-                <v-form
-                    @submit.prevent="submit"
-                    ref="form"
-                    v-model="valid"
-                    lazy-validation
-                >
-                    <v-card-actions>
-                        <v-text-field
-                            v-model="user.username"
-                            placeholder="إسم المستخدم"
-                            outlined
-                            color="secondary"
-                            :rules="required"
-                        >
-                        </v-text-field>
-                    </v-card-actions>
-                    <v-card-actions class="mt-n4">
-                        <v-text-field
-                            v-model="user.password"
-                            placeholder="كلمة المرور"
-                            outlined
-                            color="secondary"
-                            :rules="required"
-                            :append-icon="
-                                showPassword ? 'mdi-eye' : 'mdi-eye-off'
-                            "
-                            :type="showPassword ? 'text' : 'password'"
-                            @click:append="showPassword = !showPassword"
-                        >
-                        </v-text-field>
-                    </v-card-actions>
-                    <v-btn class="mt-n10" dark small text color="blue">
-                        هل نسيت كلمة المرور ؟
-                    </v-btn>
-                    <v-card-actions>
-                        <v-btn
-                            :loading="loading"
-                            type="submit"
-                            rounded
-                            block
-                            dark
-                            x-large
-                            color="primary"
-                        >
-                            تسجيل الدخول
-                        </v-btn>
-                    </v-card-actions>
-                </v-form>
-            </v-card>
+                        <v-form
+                            @submit.prevent="submit"
+                            ref="form"
+                            v-model="valid"
+                            lazy-validation>
+                            <v-card-actions>
+                                <v-text-field
+                                    v-model="user.username"
+                                    placeholder="إسم المستخدم"
+                                    outlined
+                                    color="third"
+                                    :rules="required"
+                                >
+                                </v-text-field>
+                            </v-card-actions>
+                            <v-card-actions class="mt-n4">
+                                <v-text-field
+                                    v-model="user.password"
+                                    placeholder="كلمة المرور"
+                                    outlined
+                                    color="third"
+                                    :rules="required"
+                                    :append-icon="
+                                        showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                                    "
+                                    :type="showPassword ? 'text' : 'password'"
+                                    @click:append="showPassword = !showPassword"
+                                >
+                                </v-text-field>
+                            </v-card-actions>
+                            <v-btn class="mt-n10" dark small text color="blue">
+                                هل نسيت كلمة المرور ؟
+                            </v-btn>
+                            <v-card-actions>
+                                <v-btn
+                                    :loading="loading"
+                                    type="submit"
+                                    dark
+                                    large
+                                    color="secondary"
+                                >
+                                    تسجيل الدخول
+                                </v-btn>
+                            </v-card-actions>
+                        </v-form>
+                    </v-card>
+                </v-row>
+            </v-col>
 
-            <!-- <p disabled class="text-center grey--text my-10">
-                جديد على الـ D M S
-            </p> -->
-        </div>
-        <v-footer color="white mb-4 footer" padless>
+            <v-col cols="6" md="6" lg="5" class="hidden-sm-and-down ">
+                <v-img class="bg-login" src="../assets/bg-login.png" />
+            </v-col>
+        </v-row>
+
+        <v-footer color="mb-4 footer" padless>
             <v-row justify="center" class="grey--text">
                 <span class="black--text caption font-weight-bold">
                     <strong> © المعرفه</strong> {{ new Date().getFullYear() }}
@@ -148,13 +147,12 @@ export default {
                         }
 
                         this.$store.dispatch("setSnackbar", {
-                            text: `تم تسجيل الدخول بنجاح` 
+                            text: `تم تسجيل الدخول بنجاح`
                         });
-
                     })
                     .catch(err => {
                         this.$store.dispatch("setSnackbar", {
-                            text: `إسم المستخدم او كلمة المرور خطأ` 
+                            text: `إسم المستخدم او كلمة المرور خطأ`
                         });
                     })
                     .finally(() => {
@@ -182,11 +180,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bg-login {
+    height: 100%;
+    opacity: 0.7;
+    margin: auto;
+    width: 100%;
+    margin-left: -30px;
+    margin-top: 30px;
+}
+
 .footer {
     position: absolute;
     bottom: 0px;
     left: 0;
     right: 0;
+    background: #f7f9fd;
 }
 
 .footer-link {

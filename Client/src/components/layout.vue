@@ -1,76 +1,120 @@
 <template>
     <div>
         <!-- the app bar  -->
-        <v-app-bar
+        <v-system-bar
             app
-            absolute
             v-if="!$route.meta.hideNavigation"
-            flat
-            dense
-            color="#fff"
-            height="56"
+            :class="$vuetify.theme.dark ? '' : 'white'"
+            height="50"
             class="elevation-0">
+            <v-progress-linear
+                :active="loading"
+                :indeterminate="loading"
+                absolute
+                top
+                color="indigo"
+            >
+            </v-progress-linear>
 
-            <!-- icon toggle -->
+            <!-- <v-toolbar-title>{{ $route.name }}</v-toolbar-title> -->
+
+            <span class="font-weight-bold" v-if="mini == false">
+                ERP Management System
+            </span>
+
             <v-app-bar-nav-icon
-                @click.stop="mini = !mini"
+                @click="mini = !mini"
                 large
-                class="grey lighten-4">
+                class="pl-1 bluegrey"
+                :class="mini ? '' : 'mr-12'">
                 <v-icon>mdi mdi-menu</v-icon>
             </v-app-bar-nav-icon>
-            <!-- ./ icon toggle -->
-
-            <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-btn to="/massages" icon class="ml-2" color="indigo">
-                <v-icon>mdi-chat-processing</v-icon>
-            </v-btn>
+            <settings class="ml-2"></settings>
+
+            <span class="ml-3">
+                <v-badge color="red" overlap dot left>
+                    <v-btn icon small>
+                        <v-icon>
+                            mdi-email-multiple-outline
+                        </v-icon>
+                    </v-btn>
+                </v-badge>
+            </span>
 
             <!-- button notification -->
             <v-menu offset-y :nudge-width="200">
                 <template v-slot:activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on" class="ml-5">
-                        <v-badge :content="countNoti"
+                    <span v-bind="attrs" v-on="on" class="ml-2">
+                        <v-badge
+                            :content="countNoti"
                             :value="countNoti"
                             color="primary"
-                            overlap>
-                            <v-icon >
-                                mdi mdi-bell
-                            </v-icon>
+                            overlap
+                        >
+                            <v-btn icon>
+                                <v-icon>
+                                    mdi-bell-ring-outline
+                                </v-icon>
+                            </v-btn>
                         </v-badge>
                     </span>
                 </template>
 
-                <v-list class="text-center v-card-scroll" height="45vh" max-width="400">
+                <v-list
+                    class="text-center v-card-scroll"
+                    height="45vh"
+                    max-width="400"
+                >
                     <v-container>
-                        <v-alert v-for="item in notification" :key="item.id"
+                        <v-alert
+                            v-for="item in notification"
+                            :key="item.id"
                             @click="isReadTrue(item.id)"
-                            color="cyan" class="mt-n1"
-                            border="left" :class="item.isRead ? '' : 'blue lighten-5'"
+                            color="cyan"
+                            class="mt-n1"
+                            border="left"
+                            :class="item.isRead ? '' : 'blue lighten-5'"
                             elevation="2"
-                            colored-border style="font-size: 10px">
+                            colored-border
+                            style="font-size: 10px"
+                        >
                             <v-row no-gutters class="mt-n2 mb-n3">
                                 <v-col cols="12" sm="12">
-                                    <v-img class="float-right"
+                                    <v-img
+                                        class="float-right"
                                         src="../assets/img/user.svg"
                                         alt="zaid"
-                                        width="20">
+                                        width="20"
+                                    >
                                     </v-img>
-                                    <span class="float-right mr-2 mt-1"> {{ item.userSender }} </span>
-                                    <v-btn icon small class="float-left" color="red">
+                                    <span class="float-right mr-2 mt-1">
+                                        {{ item.userSender }}
+                                    </span>
+                                    <v-btn
+                                        icon
+                                        small
+                                        class="float-left"
+                                        color="red"
+                                    >
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" sm="12">
-                                    <span class="float-right mr-6"> 
+                                    <span class="float-right mr-6">
                                         <span>تم مشاركة وثيقة معك </span>
-                                        <span class="indigo--text font-weight-bold">{{ item.documentInfo.title }}</span>
+                                        <span
+                                            class="indigo--text font-weight-bold"
+                                            >{{ item.documentInfo.title }}</span
+                                        >
                                     </span>
                                 </v-col>
                                 <v-col cols="12" sm="12">
-                                    <span class="float-right red--text mr-6"> {{ item.created | formatDateAgo}} </span>
+                                    <span class="float-right red--text mr-6">
+                                        {{ item.created | formatDateAgo }}
+                                    </span>
                                 </v-col>
                             </v-row>
                         </v-alert>
@@ -79,34 +123,29 @@
             </v-menu>
             <!-- ./ button notification -->
 
-            <!-- user profile  -->
             <user-profile></user-profile>
+
             <!-- ./ user profile  -->
-        </v-app-bar>
+        </v-system-bar>
         <!-- ./ the app bar  -->
 
         <!-- side bar app  -->
         <v-navigation-drawer
             v-model="drawer"
-            :mini-variant.sync="mini"
+            :mini-variant="mini"
             v-if="!$route.meta.hideNavigation"
             app
+            bottom
             permanent
+            :expand-on-hover="mini"
             floating
             right
-            :class="!mini ? '' : 'elevation-0'">
+        >
             <!-- logo app sideBar -->
             <div class="pa-2">
                 <img
-                    v-if="!mini"
-                    class="img-size"
+                    :class="!mini ? 'img-size' : 'img-size-mini'"
                     src="../assets/logo.jpg"
-                    alt=""
-                />
-                <img
-                    v-if="mini"
-                    class="img-size-mini"
-                    src="../assets/dms-logo.png"
                     alt=""
                 />
             </div>
@@ -114,43 +153,25 @@
 
             <v-list shaped>
                 <v-list-item
-                    to="/dashboard"
+                    to="/"
                     color="primary"
                     class="mt-3"
-                    v-if="getRole == 'Root'">
-                    <v-icon>home</v-icon>
-                    <v-list-item-title class="mr-5">
-                        الاحصائيات
-                    </v-list-item-title>
-                </v-list-item>
-
-                <v-list-item
-                    to="/home"
-                    color="primary"
-                    class="mt-3"
-                    v-if="getRole != 'Root'">
-                    <v-icon>home</v-icon>
-                    <v-list-item-title class="mr-5">
-                        الاحصائيات
-                    </v-list-item-title>
-                </v-list-item>
-
-                <v-list-item
-                    color="primary"
-                    class="my-2"
                     v-if="getRole == 'Root'"
                 >
-                    <v-icon>mdi-hospital-building</v-icon>
+                    <v-icon>home</v-icon>
                     <v-list-item-title class="mr-5">
-                        أدارة المؤسسات
+                        الرئسيه
                     </v-list-item-title>
                 </v-list-item>
 
-                <v-list-item
-                    color="primary"
-                    class="my-2"
-                    v-if="getRole == 'Root'"
-                >
+                <v-list-item to="/employe" color="primary" class="my-2">
+                    <v-icon>mdi-account-cog</v-icon>
+                    <v-list-item-title class="mr-5">
+                        أدارة الموظفين
+                    </v-list-item-title>
+                </v-list-item>
+
+                <v-list-item to="/" color="primary" class="my-2">
                     <v-icon>mdi-account-multiple-plus</v-icon>
                     <v-list-item-title class="mr-5">
                         أدارة المستخدمين
@@ -201,11 +222,14 @@ import {
 } from "@aspnet/signalr";
 import axios from "../axios";
 import UserProfile from "./UserProfile.vue";
+import { mapState } from "vuex";
+import Settings from "./Settings.vue";
 
 export default {
     name: "layout",
     components: {
-        UserProfile
+        UserProfile,
+        Settings
     },
 
     data() {
@@ -218,14 +242,16 @@ export default {
             dateNoti: null,
             countNoti: 0,
             token: localStorage.getItem("token"),
-            alert: true,
+            alert: true
+            // xmini: true,
         };
     },
 
     computed: {
         getRole() {
             return this.role;
-        }
+        },
+        ...mapState(["loading"])
     },
 
     mounted() {
@@ -307,8 +333,9 @@ export default {
                     }
                 })
                 .then(() => {
-
-                    if (this.$router.currentRoute.path != `/recipientDocument`) {
+                    if (
+                        this.$router.currentRoute.path != `/recipientDocument`
+                    ) {
                         this.$router.push("/recipientDocument");
                         this.getNoti();
                     } else {
@@ -316,7 +343,6 @@ export default {
                             text: `انت فعلاً في داخل هذا الصفحه `
                         });
                     }
-
                 });
         },
         getNoti() {
@@ -415,7 +441,7 @@ export default {
 
 .img-size {
     padding-right: 10px;
-    width: 60%;
+    width: 50%;
     // height: 70px;
 }
 
@@ -423,7 +449,6 @@ export default {
     width: 40px;
     height: 30px;
 }
-
 
 .v-card-scroll {
     display: flex !important;
