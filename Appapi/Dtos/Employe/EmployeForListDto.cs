@@ -16,7 +16,7 @@ namespace Appapi.Dtos.Employe
         public int Age { get; set; }
         public DateTime DateOfStartWork { get; set; }
         public DateTime DateofSigningContract { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         public int State { get; set; }
         public bool IsDelete { get; set; }
         public DateTime Created { get; set; }

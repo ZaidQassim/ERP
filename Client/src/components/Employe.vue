@@ -3,11 +3,7 @@
         <v-card flat tile>
             <v-card-title>
                 أدارة الموظفين
-                <v-divider
-                    class="mx-4"
-                    inset
-                    vertical>
-                </v-divider>
+                <v-divider class="mx-4" inset vertical> </v-divider>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
@@ -17,7 +13,8 @@
                     label="أبحث هنا "
                     dense
                     solo
-                    hide-details>
+                    hide-details
+                >
                 </v-text-field>
             </v-card-title>
 
@@ -37,28 +34,24 @@
                 :search="search"
                 loading-text="جاري جميع الموظفين "
                 page.sync="page"
+                @click:row="employeDetails()"
                 dense
                 no-data-text="لا يوجد موظفين "
                 :items-per-page="itemsPerPage"
                 hide-default-footer>
-
                 <template v-slot:[`item.imageUrl`]>
-                    <v-avatar
-                        color="bluegrey"
-                        class="ma-1"
-                        size="35">
+                    <v-avatar color="bluegrey" class="ma-1" size="35">
                         <v-img src="../assets/img/user.svg"></v-img>
                     </v-avatar>
                 </template>
-
 
                 <template v-slot:[`item.age`]="{ item }">
                     <span> {{ item.age }} سنه </span>
                 </template>
 
                 <template v-slot:[`item.gender`]="{ item }">
-                    <span v-if="item.gender == true">ذكر </span>
-                    <span v-if="item.gender == false">أنثى </span>
+                    <span v-if="item.gender == 'male'">ذكر </span>
+                    <span v-if="item.gender == 'female'">أنثى </span>
                 </template>
 
                 <template v-slot:[`item.motherFullName`]="{ item }">
@@ -93,7 +86,7 @@
                         rounded
                         height="18"
                     >
-                        مستمر</v-avatar
+                        متوقف</v-avatar
                     >
                 </template>
             </v-data-table>
@@ -119,7 +112,6 @@
                 :fullscreen="isfullscreen"
                 persistent
                 transition="dialog-bottom-transition">
-
                 <v-card class="pa-0 ma-0">
                     <v-toolbar flat dense>
                         <v-card-title> تسجيل موظف جديد </v-card-title>
@@ -190,7 +182,11 @@
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small class="">
                                                     الاسم الثاني
                                                     <span
@@ -211,7 +207,11 @@
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small class="">
                                                     الاسم الثالث
                                                     <span
@@ -227,11 +227,16 @@
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="الاسم الثالث للموظف">
+                                                    placeholder="الاسم الثالث للموظف"
+                                                >
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small class="">
                                                     الاسم الرابع
                                                     <span
@@ -254,10 +259,17 @@
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n3">
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    اللقب 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    اللقب
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-text-field
                                                     v-model="employe.family"
@@ -267,86 +279,141 @@
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="اللقب">
+                                                    placeholder="اللقب"
+                                                >
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    اسم الام الاول 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    اسم الام الاول
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-text-field
-                                                    v-model="employe.motherFname"
+                                                    v-model="
+                                                        employe.motherFname
+                                                    "
                                                     :rules="requiredRules"
                                                     required
                                                     outlined
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="اسم الام الاول ">
+                                                    placeholder="اسم الام الاول "
+                                                >
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    اسم الام الثاني 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    اسم الام الثاني
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-text-field
-                                                    v-model="employe.motherSname"
+                                                    v-model="
+                                                        employe.motherSname
+                                                    "
                                                     :rules="requiredRules"
                                                     required
                                                     outlined
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="اسم الام الثاني">
+                                                    placeholder="اسم الام الثاني"
+                                                >
                                                 </v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    اسم الام الثالث 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    اسم الام الثالث
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-text-field
-                                                    v-model="employe.motherTname"
+                                                    v-model="
+                                                        employe.motherTname
+                                                    "
                                                     :rules="requiredRules"
                                                     required
                                                     outlined
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="اسم الام الثالث ">
+                                                    placeholder="اسم الام الثالث "
+                                                >
                                                 </v-text-field>
-                                            </v-col>                                            
+                                            </v-col>
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="4" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="4"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    تاريخ الميلاد 
+                                                    تاريخ الميلاد
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-menu
-                                                    ref="menu"
-                                                    v-model="menu"
-                                                    :close-on-content-click="false"
-                                                    :return-value.sync="dateOfBirth"
+                                                    ref="menudateOfBirth"
+                                                    v-model="menudateOfBirth"
+                                                    :close-on-content-click="
+                                                        false
+                                                    "
+                                                    :return-value.sync="
+                                                        dateOfBirth
+                                                    "
                                                     transition="scale-transition"
                                                     offset-y
-                                                    min-width="290px">
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    min-width="290px"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs
+                                                        }"
+                                                    >
                                                         <v-text-field
-                                                            v-model="dateOfBirth"
+                                                            v-model="
+                                                                dateOfBirth
+                                                            "
                                                             append-icon="mdi-calendar"
                                                             readonly
+                                                            :rules="
+                                                                requiredRules
+                                                            "
                                                             outlined
                                                             filled
                                                             color="secondary"
                                                             dense
                                                             v-bind="attrs"
-                                                            v-on="on">
+                                                            v-on="on"
+                                                        >
                                                         </v-text-field>
                                                     </template>
 
@@ -354,17 +421,26 @@
                                                         v-model="dateOfBirth"
                                                         no-title
                                                         color="secondary"
-                                                        scrollable>
+                                                        scrollable
+                                                    >
                                                         <v-btn
                                                             text
                                                             color="info"
-                                                            @click="$refs.menu.save(dateOfBirth)">
+                                                            @click="
+                                                                $refs.menudateOfBirth.save(
+                                                                    dateOfBirth
+                                                                )
+                                                            "
+                                                        >
                                                             حسناً
                                                         </v-btn>
                                                         <v-btn
                                                             text
                                                             color="error"
-                                                            @click="menu = false">
+                                                            @click="
+                                                                menu = false
+                                                            "
+                                                        >
                                                             الغاء
                                                         </v-btn>
                                                         <v-spacer></v-spacer>
@@ -374,217 +450,396 @@
 
                                             <v-col cols="12" md="3" class="pl-2">
                                                 <small>
-                                                    الجنس   
+                                                    الجنس
+                                                    <span class="red--text font-weight-bold" >*</span>
                                                 </small>
                                                 <v-select
                                                     v-model="employe.gender"
                                                     :items="gender"
                                                     item-text="name"
                                                     item-value="value"
-                                                    filled outlined
+                                                    filled
+                                                    outlined
                                                     label="أختار الجنس"
-                                                    dense>
-                                                </v-select>                                               
+                                                    dense
+                                                >
+                                                </v-select>
                                             </v-col>
 
-                                            <v-col cols="12" md="5" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="5"
+                                                class="pl-2">
                                                 <small>
-                                                    المستمسكات (هوية أحوال او بطاقة وطنية موحدة, بطاقه سكن, جواز سفر ) 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    المستمسكات
+                                                    <span
+                                                        class="red--text font-weight-bold ml-1"
+                                                        >*</span
+                                                    >
+                                                    <span class="green--text"
+                                                        >هوية أحوال</span
+                                                    >
+                                                    او
+                                                    <span class="green--text"
+                                                        >بطاقة وطنية موحدة</span
+                                                    >
+                                                    ,
+                                                    <span class="green--text"
+                                                        >بطاقه سكن</span
+                                                    >,
+                                                    <span class="green--text"
+                                                        >جواز سفر</span
+                                                    >,
                                                 </small>
                                                 <v-file-input
-                                                    @change="handleEmployeAttachmentsUpload()"
+                                                    @change="
+                                                        handleEmployeAttachmentsUpload()
+                                                    "
                                                     v-model="employeAttachments"
                                                     multiple
                                                     counter
-                                                    chips dense
+                                                    :rules="requiredRules"
+                                                    chips
+                                                    dense
                                                     show-size
                                                     accept="image/png, image/jpeg, image/bmp, image/jpg, .pdf"
-                                                    color="primary"
+                                                    color="error"
                                                     :loading="emAtloading"
                                                     append-icon="mdi-paperclip"
                                                     prepend-icon=""
                                                     label="حدد المستمسكات المراد رفعها"
                                                     outlined
                                                     filled
-                                                    hide-details="auto"/>
+                                                />
                                             </v-col>
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="4" class="pl-2" v-for="(item, i) in coountEmployeTelephoneNumber" :key="i">
-                                                <small v-if="i == 0" >
-                                                    رقم موبايل   
-                                                    <span class="red--text font-weight-bold">*</span>
-                                                    "على الاقل يجب كتابه <b>رقم موبايل</b> واحد"
+                                            <v-col
+                                                cols="12"
+                                                md="4"
+                                                class="pl-2"
+                                                v-for="(item,
+                                                i) in coountEmployeTelephoneNumber"
+                                                :key="i"
+                                            >
+                                                <small v-if="i == 0">
+                                                    رقم موبايل
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
+                                                    "على الاقل يجب كتابه
+                                                    <b>رقم موبايل</b> واحد"
                                                 </small>
                                                 <small v-if="i > 0">
                                                     رقم موبايل أضافي
                                                 </small>
                                                 <div>
-                                                    <v-btn v-if="i == 0" depressed @click="addEmployeTelephoneNumber()"
-                                                        class="float-left mt-1" 
-                                                        color="success" small icon> 
-                                                        <v-icon>mdi-plus-circle</v-icon>
+                                                    <v-btn
+                                                        v-if="i == 0"
+                                                        depressed
+                                                        @click="
+                                                            addEmployeTelephoneNumber()
+                                                        "
+                                                        class="float-left mt-1"
+                                                        color="success"
+                                                        small
+                                                        icon
+                                                    >
+                                                        <v-icon
+                                                            >mdi-plus-circle</v-icon
+                                                        >
                                                     </v-btn>
-                                                    <v-btn v-if="i > 0" depressed @click="removeEmployeTelephoneNumber()"
-                                                        class="float-left mt-1" 
-                                                        color="error" small icon> 
-                                                        <v-icon>mdi-minus-circle</v-icon>
+                                                    <v-btn
+                                                        v-if="i > 0"
+                                                        depressed
+                                                        @click="
+                                                            removeEmployeTelephoneNumber()
+                                                        "
+                                                        class="float-left mt-1"
+                                                        color="error"
+                                                        small
+                                                        icon
+                                                    >
+                                                        <v-icon
+                                                            >mdi-minus-circle</v-icon
+                                                        >
                                                     </v-btn>
-                                                    <v-text-field 
-                                                        v-model="employeTelephoneNumbers[i]"
+                                                    <v-text-field
+                                                        v-model="
+                                                            employeTelephoneNumbers[
+                                                                i
+                                                            ]
+                                                        "
                                                         required
+                                                        :rules="requiredRules"
+                                                        type="number"
                                                         outlined
-                                                        dense class="mb-n2"
+                                                        dense
+                                                        class="mb-n2"
                                                         color="secondary"
                                                         filled
-                                                        placeholder="0000 0000 078">
+                                                        placeholder="0000 0000 078"
+                                                    >
                                                     </v-text-field>
                                                 </div>
-                                                 
                                             </v-col>
-                                          
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="4" class="pl-2" 
-                                                 v-for="(item, i) in countEmployeEmails" :key="i">
-                                                <small v-if="i == 0" >
-                                                    البريد الاكتروني  
-                                                    <span class="red--text font-weight-bold">*</span>
-                                                    على الاقل يجب كتابه <b>بريد أكتروني</b> واحد
+                                            <v-col
+                                                cols="12"
+                                                md="4"
+                                                class="pl-2"
+                                                v-for="(item,
+                                                i) in countEmployeEmails"
+                                                :key="i"
+                                            >
+                                                <small v-if="i == 0">
+                                                    البريد الاكتروني
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
+                                                    على الاقل يجب كتابه
+                                                    <b>بريد أكتروني</b> واحد
                                                 </small>
                                                 <small v-if="i > 0">
                                                     بريد الاكتروني أضــافي
                                                 </small>
 
                                                 <div>
-                                                    <v-btn v-if="i == 0" depressed @click="addEmployeEmails()"
-                                                        class="float-left mt-1" 
-                                                        color="success" small icon> 
-                                                        <v-icon>mdi-plus-circle</v-icon>
+                                                    <v-btn
+                                                        v-if="i == 0"
+                                                        depressed
+                                                        @click="
+                                                            addEmployeEmails()
+                                                        "
+                                                        class="float-left mt-1"
+                                                        color="success"
+                                                        small
+                                                        icon
+                                                    >
+                                                        <v-icon
+                                                            >mdi-plus-circle</v-icon
+                                                        >
                                                     </v-btn>
-                                                    <v-btn v-if="i > 0" depressed @click="removeEmployeEmails()"
-                                                        class="float-left mt-1" 
-                                                        color="error" small icon> 
-                                                        <v-icon>mdi-minus-circle</v-icon>
+                                                    <v-btn
+                                                        v-if="i > 0"
+                                                        depressed
+                                                        @click="
+                                                            removeEmployeEmails()
+                                                        "
+                                                        class="float-left mt-1"
+                                                        color="error"
+                                                        small
+                                                        icon
+                                                    >
+                                                        <v-icon
+                                                            >mdi-minus-circle</v-icon
+                                                        >
                                                     </v-btn>
-                                                    <v-text-field 
-                                                        v-model="employeEmails[i]"
+                                                    <v-text-field
+                                                        v-model="
+                                                            employeEmails[i]
+                                                        "
                                                         :rules="emailRules"
                                                         required
                                                         outlined
-                                                        dense class="mb-n2"
+                                                        dense
+                                                        class="mb-n2"
                                                         color="secondary"
                                                         filled
-                                                        placeholder="zaid@... .com">
+                                                        placeholder="zaid@... .com"
+                                                    >
                                                     </v-text-field>
                                                 </div>
                                             </v-col>
                                         </v-row>
 
                                         <v-row no-gutters>
-                                            <v-img 
+                                            <v-img
                                                 class="card"
-                                                src="../assets/card.svg">
+                                                src="../assets/card.svg"
+                                            >
                                             </v-img>
-                                            <v-col cols="12" md="8" class="pl-2">
-                                                <v-alert border="left" text :color="employePaymentCards.type == 2 ? '' : 'primary'"
-                                                    :class="employePaymentCards.type == 1 ? 'yellow lighten-1' : '' 
-                                                    || employePaymentCards.type == 2 ? 'green lighten-2' : ''
-                                                    || employePaymentCards.type == 3 ? 'black white--text' : ''">
+                                            <v-col
+                                                cols="12"
+                                                md="8"
+                                                class="pl-2"
+                                            >
+                                                <v-alert
+                                                    border="left"
+                                                    text
+                                                    :color="
+                                                        employePaymentCards.type ==
+                                                        2
+                                                            ? ''
+                                                            : 'primary'
+                                                    "
+                                                    :class="
+                                                        employePaymentCards.type ==
+                                                        1
+                                                            ? 'yellow lighten-1'
+                                                            : '' ||
+                                                              employePaymentCards.type ==
+                                                                  2
+                                                            ? 'green lighten-2'
+                                                            : '' ||
+                                                              employePaymentCards.type ==
+                                                                  3
+                                                            ? 'black white--text'
+                                                            : ''
+                                                    "
+                                                >
                                                     <small>
-                                                        بطاقة دفع مصرفية  لمصرف معين او محفظة الكترونية 
-                                                        <span class="red--text font-weight-bold">*</span>
-                                                        <small>
-                                                            على الاقل أضف بطاقة دفع واحده
-                                                        </small>                                                            
+                                                        بطاقة دفع مصرفية لمصرف
+                                                        معين او محفظة الكترونية
+                                                        /
+                                                        <small
+                                                            class="amber--text"
+                                                        >
+                                                            على الاقل أضف بطاقة
+                                                            دفع واحده
+                                                        </small>
                                                     </small>
 
-                                                    <v-row no-gutters class="mt-2">
-                                                        <v-col cols="12" md="3" class="pl-2">
+                                                    <v-row
+                                                        no-gutters
+                                                        class="mt-2"
+                                                    >
+                                                        <v-col
+                                                            cols="12"
+                                                            md="3"
+                                                            class="pl-2"
+                                                        >
                                                             <small>
-                                                                نوع البطاقه 
-                                                                <span class="red--text font-weight-bold">*</span>
+                                                                نوع البطاقه
+                                                                <span
+                                                                    class="red--text font-weight-bold"
+                                                                    >*</span
+                                                                >
                                                             </small>
                                                             <v-select
-                                                                v-model="employePaymentCards.type"
-                                                                :items="typeEmployePaymentCard"
+                                                                v-model="
+                                                                    employePaymentCards.type
+                                                                "
+                                                                :items="
+                                                                    typeEmployePaymentCard
+                                                                "
                                                                 item-text="name"
                                                                 item-value="value"
-                                                                solo outlined 
-                                                                :rules="requiredRules"
+                                                                solo
+                                                                outlined
+                                                                :rules="
+                                                                    requiredRules
+                                                                "
                                                                 label="نوع البطاقه"
-                                                                dense>
+                                                                dense
+                                                            >
                                                             </v-select>
                                                         </v-col>
 
-                                                        <v-col cols="12" md="3" class="pl-2">
+                                                        <v-col
+                                                            cols="12"
+                                                            md="3"
+                                                            class="pl-2"
+                                                        >
                                                             <small>
-                                                                تاريخ انتهاء الصلاحيه 
+                                                                تاريخ انتهاء
+                                                                الصلاحيه
                                                             </small>
                                                             <v-text-field
-                                                                v-model="employePaymentCards.dateExpired"
+                                                                v-model="
+                                                                    employePaymentCards.dateExpired
+                                                                "
                                                                 v-cardformat:formatCardExpiry
                                                                 outlined
-                                                                solo 
+                                                                solo
                                                                 color="secondary"
-                                                                dense>
+                                                                dense
+                                                            >
                                                             </v-text-field>
-                                                        </v-col>  
+                                                        </v-col>
 
                                                         <v-col cols="12" md="6">
                                                             <small>
                                                                 عنوان البطاقه
                                                             </small>
-                                                            <v-text-field 
-                                                                v-model="employePaymentCards.name"
+                                                            <v-text-field
+                                                                v-model="
+                                                                    employePaymentCards.name
+                                                                "
                                                                 required
-                                                                outlined solo
+                                                                outlined
+                                                                solo
                                                                 dense
                                                                 color="secondary"
-                                                                placeholder="عنوان البطاقه">
+                                                                placeholder="عنوان البطاقه"
+                                                            >
                                                             </v-text-field>
                                                         </v-col>
                                                     </v-row>
 
-                                                    <v-row no-gutters class="mt-n3">
-                                                        <v-col cols="12" md="10" class="pl-2">
+                                                    <v-row
+                                                        no-gutters
+                                                        class="mt-n3"
+                                                    >
+                                                        <v-col
+                                                            cols="12"
+                                                            md="10"
+                                                            class="pl-2"
+                                                        >
                                                             <small>
                                                                 رقم البطاقه
-                                                                <span class="red--text font-weight-bold">*</span>
+                                                                <span
+                                                                    class="red--text font-weight-bold"
+                                                                    >*</span
+                                                                >
                                                             </small>
-                                                            <v-text-field 
-                                                                v-model="employePaymentCards.numberCard"
+                                                            <v-text-field
+                                                                v-model="
+                                                                    employePaymentCards.numberCard
+                                                                "
                                                                 required
+                                                                :rules="
+                                                                    requiredRules
+                                                                "
                                                                 v-cardformat:formatCardNumber
-                                                                outlined solo
-                                                                dense class="mb-n2"
+                                                                outlined
+                                                                solo
+                                                                dense
+                                                                class="mb-n2"
                                                                 color="secondary"
-                                                                placeholder="0000 1111 2222 3333 4444">
+                                                                placeholder="0000 1111 2222 3333 4444"
+                                                            >
                                                             </v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="2">
                                                             <small>
-                                                                الرمز السري 
+                                                                الرمز السري
                                                             </small>
-                                                            <v-text-field 
-                                                                v-model="employePaymentCards.code"
+                                                            <v-text-field
+                                                                v-model="
+                                                                    employePaymentCards.code
+                                                                "
                                                                 required
                                                                 v-cardformat:formatCardCVC
                                                                 counter="4"
-                                                                outlined solo
-                                                                dense class="mb-n2"
+                                                                outlined
+                                                                solo
+                                                                dense
+                                                                class="mb-n2"
                                                                 color="secondary"
-                                                                placeholder="0000">
+                                                                placeholder="0000"
+                                                            >
                                                             </v-text-field>
                                                         </v-col>
-                                                    </v-row>                                                   
+                                                    </v-row>
                                                 </v-alert>
                                             </v-col>
                                         </v-row>
-
                                     </v-stepper-content>
 
                                     <v-stepper-content :step="2">
@@ -592,19 +847,36 @@
                                             <v-col cols="12" md="4" class="pl-2">
                                                 <small>
                                                     تاريخ بدء العمل (المباشرة)
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-menu
-                                                    ref="menu"
-                                                    v-model="menudateOfStartWork"
-                                                    :close-on-content-click="false"
-                                                    :return-value.sync="dateOfStartWork"
+                                                    ref="menudateOfStartWork"
+                                                    v-model="
+                                                        menudateOfStartWork
+                                                    "
+                                                    :close-on-content-click="
+                                                        false
+                                                    "
+                                                    :return-value.sync="
+                                                        dateOfStartWork
+                                                    "
                                                     transition="scale-transition"
                                                     offset-y
-                                                    min-width="290px">
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    min-width="290px"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs
+                                                        }"
+                                                    >
                                                         <v-text-field
-                                                            v-model="dateOfStartWork"
+                                                            v-model="
+                                                                dateOfStartWork
+                                                            "
                                                             append-icon="mdi-calendar"
                                                             readonly
                                                             outlined
@@ -612,25 +884,37 @@
                                                             color="secondary"
                                                             dense
                                                             v-bind="attrs"
-                                                            v-on="on">
+                                                            v-on="on"
+                                                        >
                                                         </v-text-field>
                                                     </template>
 
                                                     <v-date-picker
-                                                        v-model="dateOfStartWork"
+                                                        v-model="
+                                                            dateOfStartWork
+                                                        "
                                                         no-title
                                                         color="secondary"
-                                                        scrollable>
+                                                        scrollable
+                                                    >
                                                         <v-btn
                                                             text
                                                             color="info"
-                                                            @click="$refs.menu.save(dateOfStartWork)">
+                                                            @click="
+                                                                $refs.menudateOfStartWork.save(
+                                                                    dateOfStartWork
+                                                                )
+                                                            "
+                                                        >
                                                             حسناً
                                                         </v-btn>
                                                         <v-btn
                                                             text
                                                             color="error"
-                                                            @click="menudateOfStartWork = false">
+                                                            @click="
+                                                                menudateOfStartWork = false
+                                                            "
+                                                        >
                                                             الغاء
                                                         </v-btn>
                                                         <v-spacer></v-spacer>
@@ -638,22 +922,43 @@
                                                 </v-menu>
                                             </v-col>
 
-                                            <v-col cols="12" md="4" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="4"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    تاريخ توقيع العقد 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    تاريخ توقيع العقد
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-menu
-                                                    ref="menu"
-                                                    v-model="menudateofSigningContract"
-                                                    :close-on-content-click="false"
-                                                    :return-value.sync="dateofSigningContract"
+                                                    ref="menudateofSigningContract"
+                                                    v-model="
+                                                        menudateofSigningContract
+                                                    "
+                                                    :close-on-content-click="
+                                                        false
+                                                    "
+                                                    :return-value.sync="
+                                                        dateofSigningContract
+                                                    "
                                                     transition="scale-transition"
                                                     offset-y
-                                                    min-width="290px">
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    min-width="290px"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs
+                                                        }"
+                                                    >
                                                         <v-text-field
-                                                            v-model="dateofSigningContract"
+                                                            v-model="
+                                                                dateofSigningContract
+                                                            "
                                                             append-icon="mdi-calendar"
                                                             readonly
                                                             outlined
@@ -661,25 +966,37 @@
                                                             color="secondary"
                                                             dense
                                                             v-bind="attrs"
-                                                            v-on="on">
+                                                            v-on="on"
+                                                        >
                                                         </v-text-field>
                                                     </template>
 
                                                     <v-date-picker
-                                                        v-model="dateofSigningContract"
+                                                        v-model="
+                                                            dateofSigningContract
+                                                        "
                                                         no-title
                                                         color="secondary"
-                                                        scrollable>
+                                                        scrollable
+                                                    >
                                                         <v-btn
                                                             text
                                                             color="info"
-                                                            @click="$refs.menu.save(dateofSigningContract)">
+                                                            @click="
+                                                                $refs.menudateofSigningContract.save(
+                                                                    dateofSigningContract
+                                                                )
+                                                            "
+                                                        >
                                                             حسناً
                                                         </v-btn>
                                                         <v-btn
                                                             text
                                                             color="error"
-                                                            @click="menudateofSigningContract = false">
+                                                            @click="
+                                                                menudateofSigningContract = false
+                                                            "
+                                                        >
                                                             الغاء
                                                         </v-btn>
                                                         <v-spacer></v-spacer>
@@ -689,48 +1006,116 @@
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="3" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="3"
+                                                class="pl-2">
                                                 <small>
-                                                    الحالة   
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    الحالة
+                                                    <span class="red--text font-weight-bold" >*</span>
                                                 </small>
                                                 <v-select
                                                     v-model="employe.state"
                                                     :items="employestate"
+                                                    :rules="requiredRules"
                                                     item-text="name"
                                                     item-value="value"
-                                                    filled outlined
+                                                    filled
+                                                    outlined
                                                     placeholder="أختار حالة الموظف"
                                                     dense>
-                                                </v-select>                                               
+                                                </v-select>
                                             </v-col>
 
                                             <v-col cols="12" md="3" class="pl-2" v-if="employe.state == 2">
                                                 <small>
-                                                    تاريخ التوقف 
+                                                    تاريخ التوقف
                                                     <span class="red--text font-weight-bold">*</span>
                                                 </small>
-                                                <v-text-field
-                                                    :disabled="employe.state != 2"
-                                                    v-model="employe.firstName"
-                                                    required
-                                                    outlined
-                                                    dense
-                                                    color="secondary"
-                                                    filled
-                                                    placeholder="18 / 02 / 2021">
-                                                </v-text-field>
+                                                <v-menu
+                                                    ref="menu"
+                                                    v-model="menudateofState"
+                                                    :close-on-content-click="
+                                                        false
+                                                    "
+                                                    :return-value.sync="
+                                                        dateofState
+                                                    "
+                                                    transition="scale-transition"
+                                                    offset-y
+                                                    min-width="290px"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs
+                                                        }"
+                                                    >
+                                                        <v-text-field
+                                                            v-model="
+                                                                dateofState
+                                                            "
+                                                            append-icon="mdi-calendar"
+                                                            readonly
+                                                            :rules="
+                                                                requiredRules
+                                                            "
+                                                            outlined
+                                                            filled
+                                                            color="secondary"
+                                                            dense
+                                                            v-bind="attrs"
+                                                            v-on="on"
+                                                        >
+                                                        </v-text-field>
+                                                    </template>
+
+                                                    <v-date-picker
+                                                        v-model="dateofState"
+                                                        no-title
+                                                        color="secondary"
+                                                        scrollable
+                                                    >
+                                                        <v-btn
+                                                            text
+                                                            color="info"
+                                                            @click="
+                                                                $refs.menu.save(
+                                                                    dateofState
+                                                                )
+                                                            "
+                                                        >
+                                                            حسناً
+                                                        </v-btn>
+                                                        <v-btn
+                                                            text
+                                                            color="error"
+                                                            @click="
+                                                                menudateofState = false
+                                                            "
+                                                        >
+                                                            الغاء
+                                                        </v-btn>
+                                                        <v-spacer></v-spacer>
+                                                    </v-date-picker>
+                                                </v-menu>
                                             </v-col>
 
-                                            <v-col cols="12" md="6" class="pl-2" v-if="employe.state == 2">
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pl-2"
+                                                v-if="employe.state == 2">
                                                 <small>
-                                                    سبب التوقف 
+                                                    سبب التوقف
                                                     <span class="red--text font-weight-bold">*</span>
                                                 </small>
                                                 <v-text-field
-                                                    :disabled="employe.state != 2"
-                                                    v-model="employe.firstName"
+                                                    :disabled="
+                                                        employe.state != 2"
+                                                    v-model="employe.stateMessage"
                                                     required
+                                                    :rules="requiredRules"
                                                     outlined
                                                     dense
                                                     color="secondary"
@@ -741,14 +1126,26 @@
                                         </v-row>
 
                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="5" class="pl-2">
+                                            <v-col
+                                                cols="12"
+                                                md="5"
+                                                class="pl-2"
+                                            >
                                                 <small>
-                                                    نسخة من عقد العمل (صوره او ملف pdf ) 
-                                                    <span class="red--text font-weight-bold">*</span>
+                                                    نسخة من عقد العمل (صوره او
+                                                    ملف pdf )
+                                                    <span
+                                                        class="red--text font-weight-bold"
+                                                        >*</span
+                                                    >
                                                 </small>
                                                 <v-file-input
-                                                    @change="handleEmployeAttachmentsUpload()"
-                                                    v-model="employeAttachments"
+                                                    @change="
+                                                        handleEmployeAttachmentWorkUpload()
+                                                    "
+                                                    v-model="
+                                                        employeAttachmentWork
+                                                    "
                                                     multiple
                                                     counter
                                                     chips
@@ -761,13 +1158,10 @@
                                                     label="حدد الملفات المراد رفعها"
                                                     outlined
                                                     filled
-                                                    hide-details="auto"/>
+                                                    hide-details="auto"
+                                                />
                                             </v-col>
                                         </v-row>
-
-                                        
-
-                                       
                                     </v-stepper-content>
                                 </v-stepper-items>
                             </v-stepper>
@@ -777,18 +1171,21 @@
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn
-                            v-if="e1 == 1"
+                            :disabled="e1 != 2"
+                            color="primary"
+                            text
+                            @click="e1 = 1">
+                            <v-icon>mdi-chevron-double-right</v-icon>
+                            السابِق
+                        </v-btn>
+
+                        <v-btn
+                            :disabled="e1 != 1"
                             color="primary"
                             text
                             @click="e1 = e1 + 1">
                             التالي
-                        </v-btn>
-                        <v-btn
-                            v-if="e1 == 2"
-                            color="primary"
-                            text
-                            @click="e1 = 1">
-                            السابِق
+                            <v-icon>mdi-chevron-double-left</v-icon>
                         </v-btn>
 
                         <v-btn color="error" text @click="close()">
@@ -796,22 +1193,43 @@
                         </v-btn>
 
                         <v-btn
-                            v-if="e1 == 2"
-                            :loading="false"
+                            :disabled="
+                                    !employe.firstName ||
+                                    !employe.secondName ||
+                                    !employe.thirdName ||
+                                    !employe.fourthName ||
+                                    !employe.motherFname ||
+                                    !employe.motherSname ||
+                                    !employe.motherTname ||
+                                    !employe.family ||
+                                    !dateOfBirth ||
+                                    !dateOfStartWork ||
+                                    !dateofSigningContract ||
+                                    !employe.state ||
+                                    !employeEmails[0] ||
+                                    !employe.gender || !employe.stateMessage && employe.state == 2 ||
+                                    !employeTelephoneNumbers[0] ||
+                                    !employeAttachments[0]"
+                            :loading="loadingbnt"
                             @click="addEmploye()"
                             color="success"
                             type="submit"
                             depressed
+                            class="px-4"
                             elevation="2"
-                            outlined
-                            raised> 
+                            raised
+                        >
                             حفظ
-                            <v-icon class="mr-2">mdi-content-save-cog-outline</v-icon>
-                        </v-btn>                        
+                            <v-icon class="mr-2"
+                                >mdi-content-save-cog-outline</v-icon
+                            >
+                        </v-btn>
 
                         <v-spacer></v-spacer>
-                        <span class="red--text font-weight-bold">*</span>
-                        <span class="caption"> هذا الحقل مطلوب</span>
+                        <small>
+                            <span class="red--text font-weight-bold">*</span>
+                            تعني أن هذا الحقل مطلوب
+                        </small>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -831,11 +1249,16 @@ export default {
             itemsPerPage: 10,
             headerEmployes: [
                 {
+                    text: "",
+                    value: "id",
+                    disabled: true
+                },
+                {
                     text: "#",
                     value: "imageUrl",
                     align: "center",
-                    sortable: false,
-                },
+                    sortable: false
+                },                
                 {
                     text: "الإسم الاول ",
                     value: "firstName"
@@ -879,30 +1302,32 @@ export default {
                 {
                     text: "تاريخ توقيع العقد",
                     value: "dateofSigningContract"
-                },
-                
+                }
             ],
             employes: [],
             dialog: false,
             e1: 1,
             employe: {},
-            menu: false,
+            menudateOfBirth: false,
             menudateOfStartWork: false,
             menudateofSigningContract: false,
+            menudateofState: false,
             dateOfBirth: new Date().toISOString().substr(0, 10),
             dateOfStartWork: new Date().toISOString().substr(0, 10),
             dateofSigningContract: new Date().toISOString().substr(0, 10),
+            dateofState: new Date().toISOString().substr(0, 10),
             gender: [
                 {
                     name: "ذكر",
-                    value: true
+                    value: "male"
                 },
                 {
                     name: "انثى",
-                    value: false
+                    value: "female"
                 }
             ],
             employeAttachments: [],
+            employeAttachmentWork: [],
             emAtloading: false,
             employeEmails: [],
             countEmployeEmails: 1,
@@ -937,34 +1362,20 @@ export default {
                     value: 2
                 }
             ],
+            loadingbnt: false,
 
-
-             // valdation input
+            // valdation input
             valid: true,
             requiredRules: [v => !!v || "رجاءاً هذا الحقل مطلوب "],
             emailRules: [v => /.+@.+\..+/.test(v) || "E-mail must be valid"],
 
             paymentCardRules: [
-                v => !!v || ' !! هذا الحق مطلوب',
-                v => !!v && v.length == 16 || 'رقم البطاقه الاكترونيه يجب أن يكون 16 رقم',
+                v => !!v || " !! هذا الحق مطلوب",
+                v =>
+                    (!!v && v.length == 16) ||
+                    "رقم البطاقه الاكترونيه يجب أن يكون 16 رقم"
             ],
-
-
-
-            user: {},
-            selectedOrgsId: [],
-            selectOrg: [],
-            listOrg: [],
-            password: "",
-            confirmPassword: "",
-            items: [],
-            treeData: [],
-            open: [],
-            showPassword: false,
             isfullscreen: false,
-            isEdit: false,
-            dialogEditUser: false,
-            isEditPasswordUser: false
         };
     },
 
@@ -1050,57 +1461,97 @@ export default {
 
         addEmploye() {
             this.$store.commit("SET_LOADING", true);
+            this.$refs.form.validate()
+            this.loadingbnt = true;
 
-            // const data = {
-            //     title: this.employe.firstName,
-            //     documentNumber: this.document.documentNumber,
-            //     description: this.document.description,
-            //     orgId: this.id,
-            //     documentAttachments: documentAttachmentsSelected,
-            //     attachments: this.document.Attachments,
-            //     lastDate: this.date,
-            //     isSecure: this.isSecure,
-            //     passcode: this.document.passcode
-            // };
+            let employeAttachmentsSelected = "";
+            if (
+                this.employe.employeAttachment != null &&
+                this.employe.employeAttachmentWork != null
+            ) {
+                employeAttachmentsSelected = this.employe.employeAttachment.concat(
+                    this.employe.employeAttachmentWork
+                );
+            } else {
+                employeAttachmentsSelected = this.employe.employeAttachmentWork;
+            }
+
             let paymentCards = [];
             paymentCards.push(this.employePaymentCards);
-            this.employe.employePaymentCards = paymentCards;
 
             let telephoneNumbers = [];
-                this.employeTelephoneNumbers.forEach((element) => {
-                    telephoneNumbers.push({
-                        number: element,
-                    });
+            this.employeTelephoneNumbers.forEach(element => {
+                telephoneNumbers.push({
+                    number: element
                 });
-            this.employe.employeTelephoneNumbers = telephoneNumbers;
+            });
 
             let emails = [];
-                this.employeEmails.forEach((element) => {
-                    emails.push({
-                        email: element,
-                    });
+            this.employeEmails.forEach(element => {
+                emails.push({
+                    email: element
                 });
-            this.employe.employeEmails = emails;
+            });
+
+            const data = {
+                firstName: this.employe.firstName,
+                secondName: this.employe.secondName,
+                thirdName: this.employe.thirdName,
+                fourthName: this.employe.fourthName,
+                motherFname: this.employe.motherFname,
+                motherSname: this.employe.motherSname,
+                motherTname: this.employe.motherTname,
+                family: this.employe.family,
+                dateOfBirth: this.dateOfBirth,
+                dateOfStartWork: this.dateOfStartWork,
+                dateofSigningContract: this.dateofSigningContract,
+                gender: this.employe.gender,
+                state: this.employe.state,
+                stateMessage: this.employe.stateMessage,
+                dateofState: this.dateofState,
+
+                employeAttachments: employeAttachmentsSelected,
+                employeEmails: emails,
+                employeTelephoneNumbers: telephoneNumbers,
+                employePaymentCards: paymentCards
+            };
 
             axios
-                .post("employes/addEmploye", this.employe, {
+                .post("employes/addEmploye", data, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 })
                 .then(res => {
-                    this.employe = {};
                     this.close();
+                    this.$swal.fire({
+                        icon: "success",
+                        title: "تم تسجيل الموظف بنجاح",
+                        confirmButtonText: "حسناً"
+                    });
                     this.getEmployes();
                 })
                 .catch(err => {
+                    this.$store.dispatch("setSnackbar", {
+                        color: "error",
+                        text: `${err.message}`
+                    });
                 })
-                .finally(() =>{
+                .finally(() => {
                     this.$store.commit("SET_LOADING", true);
+                    this.loadingbnt = false;
                 });
         },
 
+        employeDetails(item) {
+            // this.$router.push({
+            //     path: `/documents/${id}`,
+            //     params: { id: id }
+            // });
 
+            console.log("Zaid row data table"  +  item.id);
+
+        },
 
         handleEmployeAttachmentsUpload() {
             var paths = [];
@@ -1123,29 +1574,55 @@ export default {
                             name: element.name,
                             type: "1"
                         });
-                        // console.log(element + index);
                     });
                 })
                 .catch(err => {})
                 .finally(() => (this.emAtloading = false));
-            this.employe.employeAttachments = paths;
+            this.employe.employeAttachment = paths;
         },
 
+        handleEmployeAttachmentWorkUpload() {
+            var paths = [];
+            this.emAtloading = true;
+            let formData = new FormData();
+            for (const i of Object.keys(this.employeAttachmentWork)) {
+                formData.append("files", this.employeAttachmentWork[i]);
+            }
+            axios
+                .post("uploadFile/postUploadFiles", formData, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
+                .then(res => {
+                    let filePaths = res.data.fileList;
+                    filePaths.forEach((element, index) => {
+                        paths.push({
+                            path: element.paht,
+                            name: element.name,
+                            type: "2"
+                        });
+                    });
+                })
+                .catch(err => {})
+                .finally(() => (this.emAtloading = false));
+            this.employe.employeAttachmentWork = paths;
+        },
 
         addEmployeTelephoneNumber() {
-            this.coountEmployeTelephoneNumber ++;
+            this.coountEmployeTelephoneNumber++;
         },
 
         removeEmployeTelephoneNumber() {
-            this.coountEmployeTelephoneNumber --;
+            this.coountEmployeTelephoneNumber--;
         },
 
         addEmployeEmails() {
-            this.countEmployeEmails ++;
+            this.countEmployeEmails++;
         },
 
         removeEmployeEmails() {
-            this.countEmployeEmails --;
+            this.countEmployeEmails--;
         },
 
         addEmployePaymentCard() {
@@ -1153,11 +1630,8 @@ export default {
         },
 
         removeEmployePaymentCard() {
-            this.countEmployePaymentCard --;
+            this.countEmployePaymentCard--;
         },
-
-        
-
 
         next(page) {
             let skip = page - 1;
@@ -1186,21 +1660,22 @@ export default {
             this.employe = {};
             this.$refs.form.reset();
             this.$refs.form.resetValidation();
-            this.employeEmails=  [];
-            this.countEmployeEmails= 1;
-            this.employeTelephoneNumbers= [];
-            this.coountEmployeTelephoneNumber= 1;
-        },
+            this.employeEmails = [];
+            this.countEmployeEmails = 1;
+            this.employeTelephoneNumbers = [];
+            this.coountEmployeTelephoneNumber = 1;
+            this.employePaymentCards = {};
+            this.e1 = 1
+        }
     }
 };
 </script>
 
 <style>
-.card { 
+.card {
     position: absolute;
     right: 57%;
     z-index: 1;
-    opacity: .6;
+    opacity: 0.6;
 }
-
 </style>

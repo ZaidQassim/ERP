@@ -18,8 +18,10 @@ namespace Appapi.Dtos.Employe
         public DateTime DateOfBirth { get; set; }
         public DateTime DateOfStartWork { get; set; }
         public DateTime DateofSigningContract { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         public int State { get; set; }
+        public string StateMessage { get; set; }
+        public DateTime DateofState { get; set; }
         public bool IsDelete { get; set; }
         public DateTime Created { get; set; }
 
@@ -34,7 +36,6 @@ namespace Appapi.Dtos.Employe
         {
             Created = DateTime.Now;
             IsDelete = false;
-            Gender = true;
         }
 
         public class EmployeForAddDtoValidator : AbstractValidator<EmployeForAddDto>
@@ -48,6 +49,7 @@ namespace Appapi.Dtos.Employe
                 RuleFor(x => x.DateOfStartWork).NotEmpty().NotNull();
                 RuleFor(x => x.Gender).NotEmpty().NotNull();
                 RuleFor(x => x.Created).NotEmpty().NotNull();
+                // RuleFor(x => x.StateMessage).NotEmpty().When(z => z.State == 2);
             }
         }
 

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Appapi.Migrations
 {
-    public partial class IniailCreate : Migration
+    public partial class InialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,10 +91,12 @@ namespace Appapi.Migrations
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     DateOfStartWork = table.Column<DateTime>(nullable: false),
                     DateofSigningContract = table.Column<DateTime>(nullable: false),
-                    Gender = table.Column<bool>(nullable: false),
+                    Gender = table.Column<string>(nullable: true),
                     State = table.Column<int>(nullable: false),
+                    StateMessage = table.Column<string>(nullable: true),
+                    DateofState = table.Column<DateTime>(nullable: false),
                     IsDelete = table.Column<bool>(nullable: false, defaultValue: false),
-                    Created = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 2, 14, 0, 53, 17, 341, DateTimeKind.Local).AddTicks(5739))
+                    Created = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 2, 20, 22, 14, 45, 715, DateTimeKind.Local).AddTicks(9009))
                 },
                 constraints: table =>
                 {
@@ -485,6 +487,8 @@ namespace Appapi.Migrations
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     NumberCard = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(nullable: true),
+                    DateExpired = table.Column<DateTime>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     EmployeId = table.Column<int>(nullable: false)
                 },
@@ -553,8 +557,7 @@ namespace Appapi.Migrations
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     Path = table.Column<string>(nullable: true),
-                    CustomerId = table.Column<int>(nullable: false),
-                    CustomerAccordId = table.Column<int>(nullable: true)
+                    CustomerAccordId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -563,12 +566,6 @@ namespace Appapi.Migrations
                         name: "FK_CustomerAccordAttachments_CustomerAccords_CustomerAccordId",
                         column: x => x.CustomerAccordId,
                         principalTable: "CustomerAccords",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CustomerAccordAttachments_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -663,11 +660,6 @@ namespace Appapi.Migrations
                 name: "IX_CustomerAccordAttachments_CustomerAccordId",
                 table: "CustomerAccordAttachments",
                 column: "CustomerAccordId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerAccordAttachments_CustomerId",
-                table: "CustomerAccordAttachments",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerAccords_CustomerId",

@@ -29,6 +29,16 @@ const routes = [
         }
     },
     {
+        path: "/employeDetails/:id",
+        name: "جميع تفاصيل الموظف ",
+        props: true,
+        component: () => import("../components/EmployeDetails.vue"),
+        meta: {
+            requireAuth: true
+        }
+    },
+
+    {
         path: "/Login",
         name: "login",
         component: () => import("../views/Login.vue"),

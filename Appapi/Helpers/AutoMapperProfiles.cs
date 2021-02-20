@@ -26,6 +26,7 @@ namespace Appapi.Helpers
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForEditDto, User>();
             CreateMap<User, UserForListDto>();
+            CreateMap<User, UserForDetailsDto>();
 
             // employe
             CreateMap<EmployeForAddDto, Employe>();

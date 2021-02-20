@@ -8,6 +8,8 @@ namespace Appapi.Dtos.Employe
         public string Name { get; set; }
         public string Type { get; set; }
         public string NumberCard { get; set; }
+        public string Code { get; set; }
+        public DateTime DateExpired { get; set; }
         public DateTime Created { get; set; }
 
         public EmployePaymentCardForAddDto()

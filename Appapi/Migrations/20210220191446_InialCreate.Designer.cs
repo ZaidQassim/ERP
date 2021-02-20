@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Appapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210213215317_IniailCreate")]
-    partial class IniailCreate
+    [Migration("20210220191446_InialCreate")]
+    partial class InialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,10 +221,7 @@ namespace Appapi.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CustomerAccordId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CustomerAccordId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -239,8 +236,6 @@ namespace Appapi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerAccordId");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerAccordAttachments");
                 });
@@ -327,7 +322,7 @@ namespace Appapi.Migrations
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2021, 2, 14, 0, 53, 17, 341, DateTimeKind.Local).AddTicks(5739));
+                        .HasDefaultValue(new DateTime(2021, 2, 20, 22, 14, 45, 715, DateTimeKind.Local).AddTicks(9009));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp without time zone");
@@ -336,6 +331,9 @@ namespace Appapi.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateofSigningContract")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateofState")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Family")
@@ -348,8 +346,8 @@ namespace Appapi.Migrations
                     b.Property<string>("FourthName")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Gender")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDelete")
                         .ValueGeneratedOnAdd()
@@ -371,6 +369,9 @@ namespace Appapi.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
+
+                    b.Property<string>("StateMessage")
+                        .HasColumnType("text");
 
                     b.Property<string>("ThirdName")
                         .HasColumnType("text");
@@ -505,7 +506,13 @@ namespace Appapi.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateExpired")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("EmployeId")
@@ -845,13 +852,9 @@ namespace Appapi.Migrations
 
             modelBuilder.Entity("Appapi.Models.CustomerAccordAttachment", b =>
                 {
-                    b.HasOne("Appapi.Models.CustomerAccord", null)
+                    b.HasOne("Appapi.Models.CustomerAccord", "CustomerAccord")
                         .WithMany("CustomerAccordAttachments")
-                        .HasForeignKey("CustomerAccordId");
-
-                    b.HasOne("Appapi.Models.Customer", "Customers")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerAccordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

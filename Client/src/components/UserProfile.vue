@@ -7,7 +7,7 @@
             elevation="0">
             <template v-slot:activator="{ on, attrs }" class="pl-2">
                 <div class="d-flex" v-bind="attrs" v-on="on">
-                    <p class="mt-4 ml-3">{{ userInfo.knownAs }}</p>
+                    <p class="mt-4 ml-3">{{ userInfo.fullName }}</p>
                     <img src="../assets/img/user.svg" alt="John" width="30" />
                 </div>
             </template>
@@ -21,7 +21,7 @@
                         width="90"
                     >
                     </v-img>
-                    <h3 class="text-center">{{ userInfo.knownAs }}</h3>
+                    <h3 class="text-center">{{ userInfo.fullName }}</h3>
                     <v-card-text>
                         <div class="grey--text mt-n2">
                             {{ userInfo.email }}

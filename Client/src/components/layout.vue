@@ -255,19 +255,16 @@ export default {
     },
 
     mounted() {
-        // this.connection.start();
-        this.connection.on("ShareCreated", send => {
-            console.log(send);
-            //   console.log(localStorage.getItem("userID"));
+        // this.connection.on("ShareCreated", send => {
 
-            if (send[0].reciepentId == localStorage.getItem("userID")) {
-                this.getNoti();
-            } else if (send[0].orginaztionId) {
-                this.notification.push(
-                    `تم مشاركة وثيقة معك في بتاريخ :  ${this.dateNoti} `
-                );
-            }
-        });
+        //     if (send[0].reciepentId == localStorage.getItem("userID")) {
+        //         this.getNoti();
+        //     } else if (send[0].orginaztionId) {
+        //         this.notification.push(
+        //             `تم مشاركة وثيقة معك في بتاريخ :  ${this.dateNoti} `
+        //         );
+        //     }
+        // });
     },
 
     // beforeCreate() {
@@ -278,43 +275,33 @@ export default {
 
     // inital Created Component
     created() {
-        var today = new Date();
-        var date =
-            today.getFullYear() +
-            "-" +
-            (today.getMonth() + 1) +
-            "-" +
-            today.getDate();
-        var time =
-            today.getHours() +
-            ":" +
-            today.getMinutes() +
-            ":" +
-            today.getSeconds();
-        this.dateNoti = date + " " + time;
+        // var today = new Date();
+        // var date =
+        //     today.getFullYear() +
+        //     "-" +
+        //     (today.getMonth() + 1) +
+        //     "-" +
+        //     today.getDate();
+        // var time =
+        //     today.getHours() +
+        //     ":" +
+        //     today.getMinutes() +
+        //     ":" +
+        //     today.getSeconds();
+        // this.dateNoti = date + " " + time;
 
-        this.connection = new HubConnectionBuilder()
-            .withUrl(process.env.VUE_APP_URL_SIGNALR, {
-                skipNegotiation: true,
-                transport: HttpTransportType.WebSockets
-            })
-            .configureLogging(LogLevel.Error)
-            .build();
-        // this.connection.Credentials = true;
-        this.connection.start();
-        // this.connection.on("ShareCreated", (send) => {
-        //   if (send[0].reciepentId == localStorage.getItem("userID")) {
-        //     console.log(send[0].reciepentId);
+        // this.connection = new HubConnectionBuilder()
+        //     .withUrl(process.env.VUE_APP_URL_SIGNALR, {
+        //         skipNegotiation: true,
+        //         transport: HttpTransportType.WebSockets
+        //     })
+        //     .configureLogging(LogLevel.Error)
+        //     .build();
+        // this.connection.start();
 
-        //     this.notification.push(
-        //       `تم ممشاركة وثيقة معك في الساعة ${this.dateNoti} `
-        //     );
-        //   }
-        // });
-
-        if (this.token != null) {
-            this.getNoti();
-        }
+        // if (this.token != null) {
+        //     this.getNoti();
+        // }
 
         this.$eventBus.$on("role", data => {
             this.role = data.role;

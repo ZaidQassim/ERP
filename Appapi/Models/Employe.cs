@@ -17,8 +17,10 @@ namespace Appapi.Models
         public DateTime DateOfBirth { get; set; }
         public DateTime DateOfStartWork { get; set; }
         public DateTime DateofSigningContract { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         public int State { get; set; }
+        public string StateMessage { get; set; }
+        public DateTime DateofState { get; set; }
         public bool IsDelete { get; set; }
         public DateTime Created { get; set; }
 
