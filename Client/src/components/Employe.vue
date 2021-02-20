@@ -3,6 +3,11 @@
         <v-card flat tile>
             <v-card-title>
                 أدارة الموظفين
+                <v-divider
+                    class="mx-4"
+                    inset
+                    vertical>
+                </v-divider>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
@@ -12,14 +17,13 @@
                     label="أبحث هنا "
                     dense
                     solo
-                    hide-details
-                >
+                    hide-details>
                 </v-text-field>
             </v-card-title>
 
             <!-- btn add user  -->
             <v-card-text>
-                <v-btn depressed color="secondary" @click="dialog = true">
+                <v-btn depressed color="primary" @click="dialog = true">
                     <v-icon class="ml-1">mdi-plus-circle</v-icon>
                     تسجيل موظف
                 </v-btn>
@@ -31,11 +35,23 @@
                 :items="employes"
                 loader-height="10"
                 :search="search"
-                loading-text="جاري تحميل أخر أجراءات وأحداث النظام "
+                loading-text="جاري جميع الموظفين "
                 page.sync="page"
+                dense
                 no-data-text="لا يوجد موظفين "
                 :items-per-page="itemsPerPage"
                 hide-default-footer>
+
+                <template v-slot:[`item.imageUrl`]>
+                    <v-avatar
+                        color="bluegrey"
+                        class="ma-1"
+                        size="35">
+                        <v-img src="../assets/img/user.svg"></v-img>
+                    </v-avatar>
+                </template>
+
+
                 <template v-slot:[`item.age`]="{ item }">
                     <span> {{ item.age }} سنه </span>
                 </template>
@@ -65,7 +81,7 @@
                 <template v-slot:[`item.state`]="{ item }">
                     <v-avatar
                         v-if="item.state == '1'"
-                        color="green"
+                        color="green lighten-2"
                         rounded
                         height="18"
                     >
@@ -94,7 +110,7 @@
             </v-pagination>
         </v-card>
 
-        <!-- form dialog add user -->
+        <!-- form dialog add employe -->
         <v-row justify="center">
             <v-dialog
                 v-model="dialog"
@@ -102,8 +118,8 @@
                 scrollable
                 :fullscreen="isfullscreen"
                 persistent
-                transition="dialog-bottom-transition"
-            >
+                transition="dialog-bottom-transition">
+
                 <v-card class="pa-0 ma-0">
                     <v-toolbar flat dense>
                         <v-card-title> تسجيل موظف جديد </v-card-title>
@@ -122,7 +138,7 @@
                         </v-btn>
                     </v-toolbar>
 
-                    <v-card-text style="min-height: 500px;" class="pa-0 ma-0">
+                    <v-card-text style="min-height: 500px;" class="px-3 ma-0">
                         <v-form ref="form" v-model="valid" lazy-validation>
                             <v-stepper v-model="e1">
                                 <v-stepper-header>
@@ -354,8 +370,6 @@
                                                         <v-spacer></v-spacer>
                                                     </v-date-picker>
                                                 </v-menu>
-                                                
-                                                
                                             </v-col>
 
                                             <v-col cols="12" md="3" class="pl-2">
@@ -379,14 +393,14 @@
                                                     <span class="red--text font-weight-bold">*</span>
                                                 </small>
                                                 <v-file-input
-                                                    @change="handleImagesUpload()"
+                                                    @change="handleEmployeAttachmentsUpload()"
                                                     v-model="employeAttachments"
                                                     multiple
                                                     counter
                                                     chips dense
                                                     show-size
                                                     accept="image/png, image/jpeg, image/bmp, image/jpg, .pdf"
-                                                    color="secondary"
+                                                    color="primary"
                                                     :loading="emAtloading"
                                                     append-icon="mdi-paperclip"
                                                     prepend-icon=""
@@ -397,15 +411,55 @@
                                             </v-col>
                                         </v-row>
 
-                                         <v-row no-gutters class="mt-n2">
-                                            <v-col cols="12" md="5" class="pl-2">
-                                                <small>
+                                        <v-row no-gutters class="mt-n2">
+                                            <v-col cols="12" md="4" class="pl-2" v-for="(item, i) in coountEmployeTelephoneNumber" :key="i">
+                                                <small v-if="i == 0" >
+                                                    رقم موبايل   
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                    "على الاقل يجب كتابه <b>رقم موبايل</b> واحد"
+                                                </small>
+                                                <small v-if="i > 0">
+                                                    رقم موبايل أضافي
+                                                </small>
+                                                <div>
+                                                    <v-btn v-if="i == 0" depressed @click="addEmployeTelephoneNumber()"
+                                                        class="float-left mt-1" 
+                                                        color="success" small icon> 
+                                                        <v-icon>mdi-plus-circle</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="i > 0" depressed @click="removeEmployeTelephoneNumber()"
+                                                        class="float-left mt-1" 
+                                                        color="error" small icon> 
+                                                        <v-icon>mdi-minus-circle</v-icon>
+                                                    </v-btn>
+                                                    <v-text-field 
+                                                        v-model="employeTelephoneNumbers[i]"
+                                                        required
+                                                        outlined
+                                                        dense class="mb-n2"
+                                                        color="secondary"
+                                                        filled
+                                                        placeholder="0000 0000 078">
+                                                    </v-text-field>
+                                                </div>
+                                                 
+                                            </v-col>
+                                          
+                                        </v-row>
+
+                                        <v-row no-gutters class="mt-n2">
+                                            <v-col cols="12" md="4" class="pl-2" 
+                                                 v-for="(item, i) in countEmployeEmails" :key="i">
+                                                <small v-if="i == 0" >
                                                     البريد الاكتروني  
                                                     <span class="red--text font-weight-bold">*</span>
-                                                    (على الاقل يجب كتابه بريد أكتروني واحد)
+                                                    على الاقل يجب كتابه <b>بريد أكتروني</b> واحد
+                                                </small>
+                                                <small v-if="i > 0">
+                                                    بريد الاكتروني أضــافي
                                                 </small>
 
-                                                <div v-for="(item, i) in countEmployeEmails" :key="i">
+                                                <div>
                                                     <v-btn v-if="i == 0" depressed @click="addEmployeEmails()"
                                                         class="float-left mt-1" 
                                                         color="success" small icon> 
@@ -424,84 +478,296 @@
                                                         dense class="mb-n2"
                                                         color="secondary"
                                                         filled
-                                                        placeholder="البريد ألاكتروني">
+                                                        placeholder="zaid@... .com">
                                                     </v-text-field>
                                                 </div>
-                                                 
                                             </v-col>
                                         </v-row>
 
-                                        <v-btn
-                                            color="primary"
-                                            small class="mt-5"
-                                            elevation="2"
-                                            plain
-                                            raised
-                                            @click="e1 = e1 + 1">
-                                            التالي
-                                        </v-btn>
+                                        <v-row no-gutters>
+                                            <v-img 
+                                                class="card"
+                                                src="../assets/card.svg">
+                                            </v-img>
+                                            <v-col cols="12" md="8" class="pl-2">
+                                                <v-alert border="left" text :color="employePaymentCards.type == 2 ? '' : 'primary'"
+                                                    :class="employePaymentCards.type == 1 ? 'yellow lighten-1' : '' 
+                                                    || employePaymentCards.type == 2 ? 'green lighten-2' : ''
+                                                    || employePaymentCards.type == 3 ? 'black white--text' : ''">
+                                                    <small>
+                                                        بطاقة دفع مصرفية  لمصرف معين او محفظة الكترونية 
+                                                        <span class="red--text font-weight-bold">*</span>
+                                                        <small>
+                                                            على الاقل أضف بطاقة دفع واحده
+                                                        </small>                                                            
+                                                    </small>
+
+                                                    <v-row no-gutters class="mt-2">
+                                                        <v-col cols="12" md="3" class="pl-2">
+                                                            <small>
+                                                                نوع البطاقه 
+                                                                <span class="red--text font-weight-bold">*</span>
+                                                            </small>
+                                                            <v-select
+                                                                v-model="employePaymentCards.type"
+                                                                :items="typeEmployePaymentCard"
+                                                                item-text="name"
+                                                                item-value="value"
+                                                                solo outlined 
+                                                                :rules="requiredRules"
+                                                                label="نوع البطاقه"
+                                                                dense>
+                                                            </v-select>
+                                                        </v-col>
+
+                                                        <v-col cols="12" md="3" class="pl-2">
+                                                            <small>
+                                                                تاريخ انتهاء الصلاحيه 
+                                                            </small>
+                                                            <v-text-field
+                                                                v-model="employePaymentCards.dateExpired"
+                                                                v-cardformat:formatCardExpiry
+                                                                outlined
+                                                                solo 
+                                                                color="secondary"
+                                                                dense>
+                                                            </v-text-field>
+                                                        </v-col>  
+
+                                                        <v-col cols="12" md="6">
+                                                            <small>
+                                                                عنوان البطاقه
+                                                            </small>
+                                                            <v-text-field 
+                                                                v-model="employePaymentCards.name"
+                                                                required
+                                                                outlined solo
+                                                                dense
+                                                                color="secondary"
+                                                                placeholder="عنوان البطاقه">
+                                                            </v-text-field>
+                                                        </v-col>
+                                                    </v-row>
+
+                                                    <v-row no-gutters class="mt-n3">
+                                                        <v-col cols="12" md="10" class="pl-2">
+                                                            <small>
+                                                                رقم البطاقه
+                                                                <span class="red--text font-weight-bold">*</span>
+                                                            </small>
+                                                            <v-text-field 
+                                                                v-model="employePaymentCards.numberCard"
+                                                                required
+                                                                v-cardformat:formatCardNumber
+                                                                outlined solo
+                                                                dense class="mb-n2"
+                                                                color="secondary"
+                                                                placeholder="0000 1111 2222 3333 4444">
+                                                            </v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="2">
+                                                            <small>
+                                                                الرمز السري 
+                                                            </small>
+                                                            <v-text-field 
+                                                                v-model="employePaymentCards.code"
+                                                                required
+                                                                v-cardformat:formatCardCVC
+                                                                counter="4"
+                                                                outlined solo
+                                                                dense class="mb-n2"
+                                                                color="secondary"
+                                                                placeholder="0000">
+                                                            </v-text-field>
+                                                        </v-col>
+                                                    </v-row>                                                   
+                                                </v-alert>
+                                            </v-col>
+                                        </v-row>
+
                                     </v-stepper-content>
 
                                     <v-stepper-content :step="2">
-                                        <v-row>
-                                            <v-col cols="12" md="6">
-                                                <v-subheader class="mr-n3">
-                                                    أسم المستخدم
-                                                    <span
-                                                        class="red--text font-weight-bold"
-                                                    >
-                                                        *
-                                                        <span
-                                                            class="font-size-10 mr-1"
-                                                            >"يكون باللغه
-                                                            الانكليزيه"</span
-                                                        >
-                                                    </span>
-                                                </v-subheader>
+                                        <v-row no-gutters class="mt-n2">
+                                            <v-col cols="12" md="4" class="pl-2">
+                                                <small>
+                                                    تاريخ بدء العمل (المباشرة)
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
+                                                <v-menu
+                                                    ref="menu"
+                                                    v-model="menudateOfStartWork"
+                                                    :close-on-content-click="false"
+                                                    :return-value.sync="dateOfStartWork"
+                                                    transition="scale-transition"
+                                                    offset-y
+                                                    min-width="290px">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field
+                                                            v-model="dateOfStartWork"
+                                                            append-icon="mdi-calendar"
+                                                            readonly
+                                                            outlined
+                                                            filled
+                                                            color="secondary"
+                                                            dense
+                                                            v-bind="attrs"
+                                                            v-on="on">
+                                                        </v-text-field>
+                                                    </template>
+
+                                                    <v-date-picker
+                                                        v-model="dateOfStartWork"
+                                                        no-title
+                                                        color="secondary"
+                                                        scrollable>
+                                                        <v-btn
+                                                            text
+                                                            color="info"
+                                                            @click="$refs.menu.save(dateOfStartWork)">
+                                                            حسناً
+                                                        </v-btn>
+                                                        <v-btn
+                                                            text
+                                                            color="error"
+                                                            @click="menudateOfStartWork = false">
+                                                            الغاء
+                                                        </v-btn>
+                                                        <v-spacer></v-spacer>
+                                                    </v-date-picker>
+                                                </v-menu>
+                                            </v-col>
+
+                                            <v-col cols="12" md="4" class="pl-2">
+                                                <small>
+                                                    تاريخ توقيع العقد 
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
+                                                <v-menu
+                                                    ref="menu"
+                                                    v-model="menudateofSigningContract"
+                                                    :close-on-content-click="false"
+                                                    :return-value.sync="dateofSigningContract"
+                                                    transition="scale-transition"
+                                                    offset-y
+                                                    min-width="290px">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field
+                                                            v-model="dateofSigningContract"
+                                                            append-icon="mdi-calendar"
+                                                            readonly
+                                                            outlined
+                                                            filled
+                                                            color="secondary"
+                                                            dense
+                                                            v-bind="attrs"
+                                                            v-on="on">
+                                                        </v-text-field>
+                                                    </template>
+
+                                                    <v-date-picker
+                                                        v-model="dateofSigningContract"
+                                                        no-title
+                                                        color="secondary"
+                                                        scrollable>
+                                                        <v-btn
+                                                            text
+                                                            color="info"
+                                                            @click="$refs.menu.save(dateofSigningContract)">
+                                                            حسناً
+                                                        </v-btn>
+                                                        <v-btn
+                                                            text
+                                                            color="error"
+                                                            @click="menudateofSigningContract = false">
+                                                            الغاء
+                                                        </v-btn>
+                                                        <v-spacer></v-spacer>
+                                                    </v-date-picker>
+                                                </v-menu>
+                                            </v-col>
+                                        </v-row>
+
+                                        <v-row no-gutters class="mt-n2">
+                                            <v-col cols="12" md="3" class="pl-2">
+                                                <small>
+                                                    الحالة   
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
+                                                <v-select
+                                                    v-model="employe.state"
+                                                    :items="employestate"
+                                                    item-text="name"
+                                                    item-value="value"
+                                                    filled outlined
+                                                    placeholder="أختار حالة الموظف"
+                                                    dense>
+                                                </v-select>                                               
+                                            </v-col>
+
+                                            <v-col cols="12" md="3" class="pl-2" v-if="employe.state == 2">
+                                                <small>
+                                                    تاريخ التوقف 
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
                                                 <v-text-field
-                                                    v-model="user.userName"
-                                                    :rules="requiredRules"
+                                                    :disabled="employe.state != 2"
+                                                    v-model="employe.firstName"
                                                     required
                                                     outlined
                                                     dense
                                                     color="secondary"
                                                     filled
-                                                    placeholder="أسم المستخدم"
-                                                >
+                                                    placeholder="18 / 02 / 2021">
                                                 </v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="6">
-                                                <v-subheader class="mr-n3">
-                                                    أسم الكامل للمستخدم
-                                                    <span
-                                                        class="red--text font-weight-bold"
-                                                        >*</span
-                                                    >
-                                                </v-subheader>
+
+                                            <v-col cols="12" md="6" class="pl-2" v-if="employe.state == 2">
+                                                <small>
+                                                    سبب التوقف 
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
                                                 <v-text-field
-                                                    v-model="user.knownAs"
-                                                    :rules="requiredRules"
+                                                    :disabled="employe.state != 2"
+                                                    v-model="employe.firstName"
                                                     required
                                                     outlined
-                                                    color="secondary"
                                                     dense
+                                                    color="secondary"
                                                     filled
-                                                    placeholder="أسم الكامل للمستخدم"
-                                                >
+                                                    placeholder="سبب توقف الموظف عن العمل ">
                                                 </v-text-field>
                                             </v-col>
                                         </v-row>
 
-                                        <v-btn
-                                            elevation="2"
-                                            plain
-                                            raised
-                                            color="primary"
-                                            small
-                                            @click="e1 = 1"
-                                        >
-                                            السابِق
-                                        </v-btn>
+                                        <v-row no-gutters class="mt-n2">
+                                            <v-col cols="12" md="5" class="pl-2">
+                                                <small>
+                                                    نسخة من عقد العمل (صوره او ملف pdf ) 
+                                                    <span class="red--text font-weight-bold">*</span>
+                                                </small>
+                                                <v-file-input
+                                                    @change="handleEmployeAttachmentsUpload()"
+                                                    v-model="employeAttachments"
+                                                    multiple
+                                                    counter
+                                                    chips
+                                                    show-size
+                                                    accept="image/png, image/jpeg, image/bmp, image/jpg, .pdf"
+                                                    color="primary"
+                                                    :loading="emAtloading"
+                                                    append-icon="mdi-paperclip"
+                                                    prepend-icon=""
+                                                    label="حدد الملفات المراد رفعها"
+                                                    outlined
+                                                    filled
+                                                    hide-details="auto"/>
+                                            </v-col>
+                                        </v-row>
+
+                                        
+
+                                       
                                     </v-stepper-content>
                                 </v-stepper-items>
                             </v-stepper>
@@ -511,18 +777,37 @@
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn
-                            :loading="false"
-                            @click="addEmploye()"
-                            color="blue darken-1"
-                            type="submit"
+                            v-if="e1 == 1"
+                            color="primary"
                             text
-                            x-large>
-                            حفظ
+                            @click="e1 = e1 + 1">
+                            التالي
+                        </v-btn>
+                        <v-btn
+                            v-if="e1 == 2"
+                            color="primary"
+                            text
+                            @click="e1 = 1">
+                            السابِق
                         </v-btn>
 
-                        <v-btn color="blue darken-1" text @click="close()">
+                        <v-btn color="error" text @click="close()">
                             إلغاء
                         </v-btn>
+
+                        <v-btn
+                            v-if="e1 == 2"
+                            :loading="false"
+                            @click="addEmploye()"
+                            color="success"
+                            type="submit"
+                            depressed
+                            elevation="2"
+                            outlined
+                            raised> 
+                            حفظ
+                            <v-icon class="mr-2">mdi-content-save-cog-outline</v-icon>
+                        </v-btn>                        
 
                         <v-spacer></v-spacer>
                         <span class="red--text font-weight-bold">*</span>
@@ -531,13 +816,12 @@
                 </v-card>
             </v-dialog>
         </v-row>
-        <!-- ./ form dialog add user -->
+        <!-- ./ form dialog add employe -->
     </div>
 </template>
 
 <script>
 import axios from "../axios";
-
 export default {
     data() {
         return {
@@ -548,7 +832,9 @@ export default {
             headerEmployes: [
                 {
                     text: "#",
-                    value: "id"
+                    value: "imageUrl",
+                    align: "center",
+                    sortable: false,
                 },
                 {
                     text: "الإسم الاول ",
@@ -583,6 +869,10 @@ export default {
                     value: "gender"
                 },
                 {
+                    text: "حالة الموظف",
+                    value: "state"
+                },
+                {
                     text: "تاريخ بداء العمل",
                     value: "dateOfStartWork"
                 },
@@ -590,18 +880,18 @@ export default {
                     text: "تاريخ توقيع العقد",
                     value: "dateofSigningContract"
                 },
-                {
-                    text: "حالة الموظف",
-                    value: "state"
-                }
+                
             ],
             employes: [],
             dialog: false,
             e1: 1,
             employe: {},
-            user: {},
             menu: false,
+            menudateOfStartWork: false,
+            menudateofSigningContract: false,
             dateOfBirth: new Date().toISOString().substr(0, 10),
+            dateOfStartWork: new Date().toISOString().substr(0, 10),
+            dateofSigningContract: new Date().toISOString().substr(0, 10),
             gender: [
                 {
                     name: "ذكر",
@@ -616,13 +906,52 @@ export default {
             emAtloading: false,
             employeEmails: [],
             countEmployeEmails: 1,
+            employeTelephoneNumbers: [],
+            coountEmployeTelephoneNumber: 1,
+            employePaymentCards: {},
+            typeEmployePaymentCard: [
+                {
+                    name: "كي كارد",
+                    value: 1
+                },
+                {
+                    name: "ماستر كارد",
+                    value: 2
+                },
+                {
+                    name: "زين كاش",
+                    value: 3
+                },
+                {
+                    name: "بطاقة سوج",
+                    value: 4
+                }
+            ],
+            employestate: [
+                {
+                    name: "مستمر",
+                    value: 1
+                },
+                {
+                    name: "متوقف",
+                    value: 2
+                }
+            ],
+
 
              // valdation input
             valid: true,
             requiredRules: [v => !!v || "رجاءاً هذا الحقل مطلوب "],
             emailRules: [v => /.+@.+\..+/.test(v) || "E-mail must be valid"],
 
+            paymentCardRules: [
+                v => !!v || ' !! هذا الحق مطلوب',
+                v => !!v && v.length == 16 || 'رقم البطاقه الاكترونيه يجب أن يكون 16 رقم',
+            ],
 
+
+
+            user: {},
             selectedOrgsId: [],
             selectOrg: [],
             listOrg: [],
@@ -719,13 +1048,96 @@ export default {
                 });
         },
 
-       
-
         addEmploye() {
-            console.log("employeEmails == " + this.employeEmails);
-            this.employeEmails.forEach(element => {
-                console.log("employeEmails == " + element);
-            });
+            this.$store.commit("SET_LOADING", true);
+
+            // const data = {
+            //     title: this.employe.firstName,
+            //     documentNumber: this.document.documentNumber,
+            //     description: this.document.description,
+            //     orgId: this.id,
+            //     documentAttachments: documentAttachmentsSelected,
+            //     attachments: this.document.Attachments,
+            //     lastDate: this.date,
+            //     isSecure: this.isSecure,
+            //     passcode: this.document.passcode
+            // };
+            let paymentCards = [];
+            paymentCards.push(this.employePaymentCards);
+            this.employe.employePaymentCards = paymentCards;
+
+            let telephoneNumbers = [];
+                this.employeTelephoneNumbers.forEach((element) => {
+                    telephoneNumbers.push({
+                        number: element,
+                    });
+                });
+            this.employe.employeTelephoneNumbers = telephoneNumbers;
+
+            let emails = [];
+                this.employeEmails.forEach((element) => {
+                    emails.push({
+                        email: element,
+                    });
+                });
+            this.employe.employeEmails = emails;
+
+            axios
+                .post("employes/addEmploye", this.employe, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
+                .then(res => {
+                    this.employe = {};
+                    this.close();
+                    this.getEmployes();
+                })
+                .catch(err => {
+                })
+                .finally(() =>{
+                    this.$store.commit("SET_LOADING", true);
+                });
+        },
+
+
+
+        handleEmployeAttachmentsUpload() {
+            var paths = [];
+            this.emAtloading = true;
+            let formData = new FormData();
+            for (const i of Object.keys(this.employeAttachments)) {
+                formData.append("files", this.employeAttachments[i]);
+            }
+            axios
+                .post("uploadFile/postUploadFiles", formData, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
+                .then(res => {
+                    let filePaths = res.data.fileList;
+                    filePaths.forEach((element, index) => {
+                        paths.push({
+                            path: element.paht,
+                            name: element.name,
+                            type: "1"
+                        });
+                        // console.log(element + index);
+                    });
+                })
+                .catch(err => {})
+                .finally(() => (this.emAtloading = false));
+            this.employe.employeAttachments = paths;
+        },
+
+
+        addEmployeTelephoneNumber() {
+            this.coountEmployeTelephoneNumber ++;
+        },
+
+        removeEmployeTelephoneNumber() {
+            this.coountEmployeTelephoneNumber --;
         },
 
         addEmployeEmails() {
@@ -734,6 +1146,14 @@ export default {
 
         removeEmployeEmails() {
             this.countEmployeEmails --;
+        },
+
+        addEmployePaymentCard() {
+            this.countEmployePaymentCard++;
+        },
+
+        removeEmployePaymentCard() {
+            this.countEmployePaymentCard --;
         },
 
         
@@ -763,15 +1183,24 @@ export default {
 
         close() {
             this.dialog = false;
-            this.dialogEditUser = false;
             this.employe = {};
-            this.password = "";
             this.$refs.form.reset();
             this.$refs.form.resetValidation();
-            this.selectOrg = [];
+            this.employeEmails=  [];
+            this.countEmployeEmails= 1;
+            this.employeTelephoneNumbers= [];
+            this.coountEmployeTelephoneNumber= 1;
         },
     }
 };
 </script>
 
-<style></style>
+<style>
+.card { 
+    position: absolute;
+    right: 57%;
+    z-index: 1;
+    opacity: .6;
+}
+
+</style>

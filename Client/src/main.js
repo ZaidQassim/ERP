@@ -8,10 +8,11 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
 import style from "./style/style.scss";
 import "./filters"
+import VueCardFormat from "vue-credit-card-validation";
 
 
 Vue.use(VueSweetalert2);
-
+Vue.use(VueCardFormat);
 Vue.config.productionTip = false;
 Vue.prototype.$eventBus = new Vue();
 

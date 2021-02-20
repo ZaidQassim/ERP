@@ -54,10 +54,5 @@ namespace Appapi.Data.Repository
         }
 
 
-        // public async Task<IEnumerable<SubDepartment>> GetSubDepartment(int id)
-        // {
-        //     return await _context.SubDepartments.Where(u => u.DepartmentId == id).ToListAsync();
-        // }
-
     }
 }

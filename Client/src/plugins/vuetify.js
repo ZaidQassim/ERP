@@ -20,7 +20,7 @@ export default new Vuetify({
                 success: "#4CAF50",
                 error: "#D32F2F",
                 info: "#2196F3",
-                bluegrey: "#F5F5F5",
+                bluegrey: "#f7f9fd",
                 background: "#f7f9fd"
             },
             dark: {
@@ -31,7 +31,7 @@ export default new Vuetify({
                 success: "#4CAF50",
                 error: "#E91E63",
                 info: "#4e89ae",
-                bluegrey: "#424242",
+                bluegrey: "#2f3640",
                 background: "#2f3640"
             }
         },
