@@ -11,7 +11,7 @@
                 reverse
             ></v-progress-linear>
 
-            <v-container fluid>
+            <v-container fluid class="mt-n2">
                 <transition
                     name="router-anim"
                     enter-active-class="animated zoomIn">
@@ -24,8 +24,7 @@
             v-model="snackbar.showing"
             :timeout="3000"
             left
-            :color="snackbar.color"
-        >
+            :color="snackbar.color">
             {{ snackbar.text }}
             <template v-slot:action="{ attrs }">
                 <v-btn
@@ -47,7 +46,7 @@ import layout from "./components/layout";
 export default {
     data() {
         return {
-            loading: false
+           
         };
     },
     components: {
@@ -76,6 +75,6 @@ export default {
 }
 
 /* #app {
-    background: #f7f9fd;
+    background: #f8f9fc;
 } */
 </style>

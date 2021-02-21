@@ -16,7 +16,7 @@
                 <v-container>
                     <v-img
                         class="mx-auto"
-                        src="../assets/erp-system.jpg"
+                        src="../assets/logo-login.png"
                         width="120">
                     </v-img>
                     <h3 class="text-center">إعــــدادات النظــام </h3>

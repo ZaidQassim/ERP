@@ -37,6 +37,14 @@ const routes = [
             requireAuth: true
         }
     },
+    {
+        path: "/employeAccord",
+        name: "أدارة ذمــة الموظفين",
+        component: () => import("../components/EmployeAccord.vue"),
+        meta: {
+            requireAuth: true
+        }
+    },
 
     {
         path: "/Login",

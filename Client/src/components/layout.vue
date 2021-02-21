@@ -1,34 +1,27 @@
 <template>
     <div>
         <!-- the app bar  -->
-        <v-system-bar
+        <v-app-bar
             app
             v-if="!$route.meta.hideNavigation"
-            :class="$vuetify.theme.dark ? '' : 'white'"
+            :class="$vuetify.theme.dark ? '' : 'bluegrey'"
             height="50"
+            lights-out
             class="elevation-0">
+
             <v-progress-linear
                 :active="loading"
                 :indeterminate="loading"
                 absolute
                 top
-                color="indigo"
-            >
+                color="indigo">
             </v-progress-linear>
 
-            <!-- <v-toolbar-title>{{ $route.name }}</v-toolbar-title> -->
-
-            <span class="font-weight-bold" v-if="mini == false">
-                ERP Management System
-            </span>
-
-            <v-app-bar-nav-icon
-                @click="mini = !mini"
-                large
-                class="pl-1 bluegrey"
-                :class="mini ? '' : 'mr-12'">
+            <v-app-bar-nav-icon @click="mini = !mini" large class="white">
                 <v-icon>mdi mdi-menu</v-icon>
             </v-app-bar-nav-icon>
+
+            <v-breadcrumbs :items="itemsbreadcrumbs"></v-breadcrumbs>
 
             <v-spacer></v-spacer>
 
@@ -52,8 +45,7 @@
                             :content="countNoti"
                             :value="countNoti"
                             color="primary"
-                            overlap
-                        >
+                            overlap>
                             <v-btn icon>
                                 <v-icon>
                                     mdi-bell-ring-outline
@@ -126,7 +118,7 @@
             <user-profile></user-profile>
 
             <!-- ./ user profile  -->
-        </v-system-bar>
+        </v-app-bar>
         <!-- ./ the app bar  -->
 
         <!-- side bar app  -->
@@ -135,68 +127,71 @@
             :mini-variant="mini"
             v-if="!$route.meta.hideNavigation"
             app
+            class="black"
             bottom
             permanent
             :expand-on-hover="mini"
             floating
-            right
-        >
-            <!-- logo app sideBar -->
-            <div class="pa-2">
-                <img
-                    :class="!mini ? 'img-size' : 'img-size-mini'"
-                    src="../assets/logo.jpg"
-                    alt=""
-                />
-            </div>
-            <!-- ./ logo app sideBar -->
+            right>
+            <v-img class="img-drawer"
+                src="../assets/register.jpg"
+                alt="zaid"/>
 
-            <v-list shaped>
-                <v-list-item
-                    to="/"
-                    color="primary"
-                    class="mt-3"
-                    v-if="getRole == 'Root'"
-                >
+            <v-list-item dark class="my-1 px-6 text-center">
+                <img
+                    width="45"
+                    :class="mini ? 'mr-n5' : ''"
+                    src="../assets/logo-login.png"
+                />
+                <small class="mr-2">    
+                    نظام أدارة الموظفين <br />
+                    في الشركة
+                </small>
+            </v-list-item>
+
+            <v-divider v-if="mini" class="mt-2 mx-3 white"></v-divider>
+
+            <v-list shaped dark class="mt-4">
+                <v-list-item to="/" color="amber" class="mt-3">
                     <v-icon>home</v-icon>
                     <v-list-item-title class="mr-5">
                         الرئسيه
                     </v-list-item-title>
                 </v-list-item>
 
-                <v-list-item to="/employe" color="primary" class="my-2">
+                <v-list-item to="/employe" color="amber" class="my-2">
                     <v-icon>mdi-account-cog</v-icon>
                     <v-list-item-title class="mr-5">
                         أدارة الموظفين
                     </v-list-item-title>
                 </v-list-item>
 
-                <v-list-item to="/" color="primary" class="my-2">
-                    <v-icon>mdi-account-multiple-plus</v-icon>
-                    <v-list-item-title class="mr-5">
-                        أدارة المستخدمين
-                    </v-list-item-title>
-                </v-list-item>
+                <!-- group employeAccord -->
+                <v-list-group prepend-icon="mdi-package-variant">
+                    <template v-slot:activator>
+                        <v-list-item-title class="ma-0 pa-0">
+                            أدارة الذمه
+                        </v-list-item-title>
+                    </template>
 
-                <v-list-item to="/senderDocument" color="primary" class="my-2">
-                    <v-icon>mdi-file-send</v-icon>
+                    <v-list-item
+                        to="/employeAccord"
+                        color="amber"
+                        class="my-2"                    >
+                        <v-icon>mdi-account-convert</v-icon>
+                        <v-list-item-title class="mr-3">
+                            ذمة موظفين الشركة
+                        </v-list-item-title>
+                    </v-list-item>
 
-                    <v-list-item-title class="mr-5">
-                        الوثائق الصادر
-                    </v-list-item-title>
-                </v-list-item>
-
-                <v-list-item
-                    to="/recipientDocument"
-                    color="primary"
-                    class="my-2"
-                >
-                    <v-icon>mdi-file-undo</v-icon>
-
-                    <v-list-item-title class="mr-5">
-                        الوثائق الواَرد
-                    </v-list-item-title>
-                </v-list-item>
+                    <v-list-item to="/" color="amber">
+                        <v-icon>mdi-handshake-outline</v-icon>
+                        <v-list-item-title class="mr-3">
+                            دمة خارجيـــه
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list-group>
+                <!-- ./ group employeAccord -->
             </v-list>
 
             <template v-slot:append>
@@ -224,7 +219,7 @@ import axios from "../axios";
 import UserProfile from "./UserProfile.vue";
 import { mapState } from "vuex";
 import Settings from "./Settings.vue";
-
+    
 export default {
     name: "layout",
     components: {
@@ -234,6 +229,7 @@ export default {
 
     data() {
         return {
+            itemsbreadcrumbs: [],
             role: "",
             connection: "",
             drawer: true,
@@ -246,6 +242,35 @@ export default {
             // xmini: true,
         };
     },
+    
+    watch: {       
+        "$route"(to, from) {
+            if (to.path == '/') {
+                this.itemsbreadcrumbs = [
+                    {
+                        text: "الرئسيه",
+                        disabled: false,
+                        href: "/"
+                    }
+                ];
+            } else {
+                this.itemsbreadcrumbs = [
+                    {
+                        text: "الرئسيه",
+                        disabled: false,
+                        href: "/"
+                    },
+                    {
+                        text: to.name ,
+                        disabled: false,
+                        href: to.path
+                    },
+                ];
+            }
+            
+        },
+        
+    },
 
     computed: {
         getRole() {
@@ -256,7 +281,6 @@ export default {
 
     mounted() {
         // this.connection.on("ShareCreated", send => {
-
         //     if (send[0].reciepentId == localStorage.getItem("userID")) {
         //         this.getNoti();
         //     } else if (send[0].orginaztionId) {
@@ -355,86 +379,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.divider {
-    display: table;
-    font-size: 15px;
-    text-align: center;
+
+.img-drawer{
+    position: absolute;
+    opacity: .3;
     width: 100%;
-    margin: 4px auto;
-    span {
-        display: table-cell;
-        position: relative;
-        &:first-child {
-            width: 50%;
-            top: 13px;
-            background-size: 100% 2px;
-            background-position: 0 0, 0 100%;
-            background-repeat: no-repeat;
-            background-image: webkit-gradient(
-                linear,
-                0 0,
-                0 100%,
-                from(transparent),
-                to(#2980b9)
-            );
-            background-image: -webkit-linear-gradient(
-                180deg,
-                transparent,
-                #2980b9
-            );
-            background-image: -moz-linear-gradient(
-                180deg,
-                transparent,
-                #2980b9
-            );
-            background-image: -o-linear-gradient(180deg, transparent, #2980b9);
-            background-image: linear-gradient(90deg, transparent, #2980b9);
-        }
-        &:last-child {
-            width: 50%;
-            top: 13px;
-            -moz-background-size: 100% 2px;
-            background-size: 100% 2px;
-            background-position: 0 0, 0 100%;
-            background-repeat: no-repeat;
-            background-image: webkit-gradient(
-                linear,
-                0 0,
-                0 100%,
-                from(#2980b9),
-                to(transparent)
-            );
-            background-image: -webkit-linear-gradient(
-                180deg,
-                #2980b9,
-                transparent
-            );
-            background-image: -moz-linear-gradient(
-                180deg,
-                #2980b9,
-                transparent
-            );
-            background-image: -o-linear-gradient(180deg, #2980b9, transparent);
-            background-image: linear-gradient(90deg, #2980b9, transparent);
-        }
-        &:nth-child(2) {
-            color: #000;
-            padding: 0px 5px;
-            width: auto;
-            white-space: nowrap;
-        }
-    }
-}
-
-.img-size {
-    padding-right: 10px;
-    width: 50%;
-    // height: 70px;
-}
-
-.img-size-mini {
-    width: 40px;
-    height: 30px;
+    height: 100%;
 }
 
 .v-card-scroll {

@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Appapi.Data;
 using Appapi.Data.Interfaces;
 using Appapi.Dtos.Employe;
 using Appapi.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Appapi.Controllers
 {
@@ -17,11 +20,13 @@ namespace Appapi.Controllers
     {
         private readonly IUnitOfWork<Employe> _employe;
         private readonly IMapper _mapper;
+        private readonly DataContext _context;
 
-        public EmployesController(IUnitOfWork<Employe> employe, IMapper mapper)
+        public EmployesController(IUnitOfWork<Employe> employe, IMapper mapper, DataContext context)
         {
             _employe = employe;
             _mapper = mapper;
+            _context = context;
         }
 
 
@@ -40,7 +45,7 @@ namespace Appapi.Controllers
                 result = new { employeToReturn }
             });
         }
-        
+
 
         [HttpGet("getEmployes")]
         public async Task<IActionResult> GetEmployes(int? skip, int? take)
@@ -58,6 +63,23 @@ namespace Appapi.Controllers
                 result = new { employesToReturn, count }
             });
         }
+
+        [HttpGet("listEmployes")]
+        public async Task<IActionResult> GetlistEmployes()
+        {
+            var listemployes = await _context.Employes.Select(e => new
+            {
+                e.Id,
+                fullName = e.FirstName + " " + e.SecondName + " " + e.ThirdName + " " +  e.FourthName
+            }).OrderBy(e => e.Id).ToListAsync();
+            return StatusCode(200, new
+            {
+                code = 200,
+                message = "listEmployes successfuly",
+                result = new { listemployes }
+            });
+        }
+
 
 
         [HttpPost("addEmploye")]

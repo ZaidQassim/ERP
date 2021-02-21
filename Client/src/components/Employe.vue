@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card flat tile>
+        <v-card flat>
             <v-card-title>
                 أدارة الموظفين
                 <v-divider class="mx-4" inset vertical> </v-divider>
@@ -13,8 +13,7 @@
                     label="أبحث هنا "
                     dense
                     solo
-                    hide-details
-                >
+                    hide-details>
                 </v-text-field>
             </v-card-title>
 
@@ -34,7 +33,7 @@
                 :search="search"
                 loading-text="جاري جميع الموظفين "
                 page.sync="page"
-                @click:row="employeDetails()"
+                @click:row="employeDetails"
                 dense
                 no-data-text="لا يوجد موظفين "
                 :items-per-page="itemsPerPage"
@@ -66,7 +65,7 @@
                 </template>
 
                 <template v-slot:[`item.dateofSigningContract`]="{ item }">
-                    <span class="error--text">
+                    <span class="primary--text">
                         {{ item.dateofSigningContract | formatDate }}
                     </span>
                 </template>
@@ -1249,11 +1248,6 @@ export default {
             itemsPerPage: 10,
             headerEmployes: [
                 {
-                    text: "",
-                    value: "id",
-                    disabled: true
-                },
-                {
                     text: "#",
                     value: "imageUrl",
                     align: "center",
@@ -1544,13 +1538,10 @@ export default {
         },
 
         employeDetails(item) {
-            // this.$router.push({
-            //     path: `/documents/${id}`,
-            //     params: { id: id }
-            // });
-
-            console.log("Zaid row data table"  +  item.id);
-
+            this.$router.push({
+                path: `/employeDetails/${item.id}`,
+                params: { id: item.id }
+            });
         },
 
         handleEmployeAttachmentsUpload() {

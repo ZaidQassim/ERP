@@ -37,7 +37,24 @@ namespace Appapi.Controllers
 
             var count = await _employeAccord.Entity.Count();
             var employeAccords = await _employeAccord.Entity.GetAll(skip.Value, take.Value);
-            var employeAccordsToReturn = _mapper.Map<IEnumerable<EmployeAccordForListDto>>(employeAccords);
+            // var employeAccordsToReturn = _mapper.Map<IEnumerable<EmployeAccordForListDto>>(employeAccords);
+            var employeAccordsToReturn = employeAccords.Select(ea => new { 
+                ea.Id,
+                ea.Type,
+                ea.SequenceNumber,
+                ea.Description,
+                ea.DateOfReceiving,
+                ea.DateOfDelivery,
+                attachments = _context.EmployeAccordAttachments.Where(a => a.EmployeAccordId == ea.Id).Count(),
+                employe = _context.Employes.Where(e => e.Id == ea.EmployeId).Select(e => new {
+                    e.FirstName,
+                    e.SecondName,
+                    e.ThirdName,
+                    e.FourthName,
+                    e.State
+                }).FirstOrDefault(),
+            }).ToList();
+
             return StatusCode(200, new
             {
                 code = 200,

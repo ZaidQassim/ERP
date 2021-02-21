@@ -16,12 +16,12 @@ export default new Vuetify({
                 primary: "#4e89ae",
                 secondary: "#526C83",
                 third: "#4e89ae",
-                accent: "#ed6663",
+                accent: "#e74c3c",
                 success: "#4CAF50",
                 error: "#D32F2F",
                 info: "#2196F3",
                 bluegrey: "#f7f9fd",
-                background: "#f7f9fd"
+                background: "#f8f9fc"
             },
             dark: {
                 primary: "#4e89ae",
