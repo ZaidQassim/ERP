@@ -184,7 +184,7 @@
                         </v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item to="/" color="amber">
+                    <v-list-item to="/customerAccord" color="amber">
                         <v-icon>mdi-handshake-outline</v-icon>
                         <v-list-item-title class="mr-3">
                             دمة خارجيـــه

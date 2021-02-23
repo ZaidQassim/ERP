@@ -157,8 +157,8 @@ namespace Appapi.Migrations
                     b.Property<string>("FourthName")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Gender")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("boolean");
@@ -320,7 +320,7 @@ namespace Appapi.Migrations
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2021, 2, 20, 22, 14, 45, 715, DateTimeKind.Local).AddTicks(9009));
+                        .HasDefaultValue(new DateTime(2021, 2, 23, 1, 40, 58, 389, DateTimeKind.Local).AddTicks(5517));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp without time zone");

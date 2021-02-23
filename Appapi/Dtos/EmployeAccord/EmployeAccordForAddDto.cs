@@ -35,7 +35,6 @@ namespace Appapi.Dtos.EmployeAccord
                 RuleFor(x => x.SequenceNumber).NotEmpty().NotNull().WithMessage("Please The First Name Is Required");
                 RuleFor(x => x.DateOfReceiving).NotEmpty().NotNull().WithMessage("Please The First Name Is Required");
                 RuleFor(x => x.EmployeId).NotEmpty().NotNull();
-                RuleFor(x => x.Description).NotEmpty().NotNull();
                 RuleFor(x => x.Created).NotEmpty().NotNull();
             }
 

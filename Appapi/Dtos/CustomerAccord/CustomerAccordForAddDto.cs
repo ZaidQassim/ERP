@@ -14,7 +14,7 @@ namespace Appapi.Dtos.Employe
         public string FourthName { get; set; }
         public string Family { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         public bool IsDelete { get; set; }
         public DateTime Created { get; set; }
 
@@ -38,7 +38,6 @@ namespace Appapi.Dtos.Employe
         {
             Created = DateTime.Now;
             IsDelete = false;
-            Gender = true;
         }
 
         public class CustomerAccordForAddDtoValidator : AbstractValidator<CustomerAccordForAddDto>

@@ -51,7 +51,9 @@ namespace Appapi.Controllers
                     e.SecondName,
                     e.ThirdName,
                     e.FourthName,
-                    e.State
+                    e.State,
+                    telephoneNumber = _context.EmployeTelephoneNumbers.Where(t => t.EmployeId == e.Id)
+                        .FirstOrDefault().Number
                 }).FirstOrDefault(),
             }).ToList();
 

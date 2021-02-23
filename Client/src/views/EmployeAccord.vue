@@ -74,10 +74,35 @@
                     </span>
                 </template>
 
+                <template v-slot:[`item.type`]="{ item }">
+                    <span v-if="item.type == 1" class="primary--text">
+                       جهاز حاسوب
+                    </span>
+                    <span v-if="item.type == 2" class="primary--text">
+                       شاشة PC 
+                    </span>
+                    <span v-if="item.type == 3" class="primary--text">
+                       ماوس 
+                    </span>
+                    <span v-if="item.type == 4" class="primary--text">
+                       أيباد 
+                    </span>
+                    <span v-if="item.type == 5" class="primary--text">
+                       كيبورد 
+                    </span>
+                    <span v-if="item.type == 6" class="primary--text">
+                       اخرى 
+                    </span>
+                </template>
+
                 <template v-slot:[`item.dateOfDelivery`]="{ item }">
                     <span class="error--text">
                         {{ item.dateOfDelivery | formatDate }}
                     </span>
+                </template>
+
+                <template v-slot:[`item.description`]="{ item }">
+                    <small v-html="item.description"></small>
                 </template>
 
                 <template v-slot:[`item.employeFullName`]="{ item }">
@@ -285,7 +310,6 @@
                                                 v-model="dateOfDelivery"
                                                 append-icon="mdi-calendar"
                                                 readonly
-                                                :rules="requiredRules"
                                                 outlined
                                                 filled
                                                 color="secondary"
@@ -395,6 +419,8 @@
                         </v-btn>
 
                         <v-btn
+                            :disabled="!employeAccordAttachment1[0]
+                            || !employeId || !employeAccord.type || !dateOfReceiving"
                             :loading="loadingbnt"
                             @click="addEmployeAccord()"
                             color="success"
@@ -466,6 +492,10 @@ export default {
                 {
                     text: "حالة صاحب الذمة",
                     value: "employe.state"
+                },
+                {
+                    text: "رقم هاتف صاحب الذمة",
+                    value: "employe.telephoneNumber"
                 },
                 {
                     text: "ملفات ومرفقات الذمة",
@@ -559,7 +589,7 @@ export default {
                 .catch(err => {});
         },
 
-         //  get All Employes
+         //  get list Employes
         getlistEmployes() {
             axios
                 .get(
@@ -720,9 +750,12 @@ export default {
 
         close() {
             this.dialog = false;
-            this.employe = {};
+            this.employeAccord = {};
             this.$refs.form.reset();
             this.$refs.form.resetValidation();
+            this.employeAccordAttachment1 = [];
+            this.employeAccordAttachment2 = [];
+            this.dateOfReceiving = new Date().toISOString().substr(0, 10);
         }
     }
 };

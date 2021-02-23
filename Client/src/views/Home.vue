@@ -12,11 +12,11 @@
                     <div class="d-flex justify-space-between">
                         <div style="font-size: 10px">
                             <span class="grey--text">
-                                المؤسسات السؤول عنها
+                                عدد مستخدمين النظام
                             </span>
 
                             <v-list-item-title class="font-weight-bold">
-                                {{ infoDashbord.myOrgs }}
+                                1
                             </v-list-item-title>
                         </div>
                         <v-divider vertical></v-divider>
@@ -40,10 +40,10 @@
                     <div class="d-flex justify-space-between">
                         <div style="font-size: 10px" class="pr-4">
                             <span class="grey--text">
-                                وثائقي
+                                اجمالي الموظــفين
                             </span>
                             <v-list-item-title class="font-weight-bold">
-                                {{ infoDashbord.myDocuments }}
+                                5
                             </v-list-item-title>
                         </div>
                         <v-divider vertical></v-divider>
@@ -67,11 +67,11 @@
                     <div class="d-flex justify-space-between">
                         <div style="font-size: 10px" class="pr-6">
                             <span class="grey--text">
-                                الصادره
+                                اٍجمالي الذمة في الشركه
                             </span>
 
                             <v-list-item-title class="font-weight-bold">
-                                {{ infoDashbord.mySender }}
+                                3
                             </v-list-item-title>
                         </div>
                         <v-divider vertical></v-divider>
@@ -93,11 +93,11 @@
                     <div class="d-flex justify-space-between">
                         <div style="font-size: 10px" class="pr-4">
                             <span class="grey--text">
-                                الوثائق الوارده
+                                اِجمالي الذمة الخارجيه
                             </span>
 
                             <v-list-item-title class="font-weight-bold">
-                                {{ infoDashbord.myReciepent }}
+                                2
                             </v-list-item-title>
                         </div>
                         <v-divider vertical></v-divider>
@@ -119,10 +119,10 @@
                     <div class="d-flex justify-space-between">
                         <div style="font-size: 10px" class="pr-2">
                             <span class="grey--text">
-                                عدد تواقيعي
+                                الذمة يجب ان تسـلم
                             </span>
                             <v-list-item-title class="font-weight-bold">
-                                {{ infoDashbord.myDocumentomments }}
+                                10
                             </v-list-item-title>
                         </div>
                         <v-divider vertical></v-divider>
@@ -136,88 +136,10 @@
             </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mt-10">
             <v-col cols="12" md="7" class="mt-6">
-                <v-card
-                    :loading="loadingDocShared"
-                    color="white"
-                    elevation="1"
-                    rounded
-                    class="v-card-scroll"
-                    height="35vh"
-                >
-                    <v-container fluid>
-                        <v-sheet
-                            color="light-blue"
-                            height="50"
-                            rounded
-                            class="mt-n8"
-                            shaped
-                        >
-                            <div class="py-3 pr-2 white--text" dack>
-                                أحصائيات مشاركات وثائقي
-                            </div>
-                        </v-sheet>
-                    </v-container>
+                <apexchart type="line" height="350" :options="chartOptions2" :series="series2"></apexchart>
 
-                    <v-card-text>
-                        <v-alert dense class="mt-n4">
-                            <div
-                                v-if="docShared != ''"
-                                class="font-weight-bold"
-                                style="font-size: 10px"
-                            >
-                                <span>
-                                    #
-                                </span>
-                                <span class="pr-8">
-                                    أسم الوثيقه المشاركه
-                                </span>
-                                <span class="float-left">
-                                    عدد مرات المشاركة
-                                </span>
-                            </div>
-                        </v-alert>
-
-                        <v-alert
-                            v-for="(item, i) in docShared"
-                            :key="i"
-                            dense
-                            class="my-2"
-                            elevation="2"
-                        >
-                            <div class="grey--text" style="font-size: 10px">
-                                <span>
-                                    #
-                                </span>
-                                <span class="pr-8">
-                                    {{ item.nameDoc }}
-                                </span>
-                                <span class="float-left">
-                                    <v-chip label small>
-                                        {{ item.countShare }}
-                                    </v-chip>
-                                </span>
-                            </div>
-                        </v-alert>
-                        <v-alert
-                            v-if="docShared == ''"
-                            outlined
-                            type="warning"
-                            dense
-                            icon="mdi-cloud-alert"
-                            border="left"
-                            width="300"
-                            class="text-center d-flex align-center ma-auto mt-10"
-                        >
-                            <span>
-                                لا توجد بيانات
-                            </span>
-                        </v-alert>
-                    </v-card-text>
-                </v-card>
-
-                <v-card> </v-card>
             </v-col>
 
             <v-col cols="12" md="5">
@@ -232,14 +154,15 @@
         </v-row>
 
         <div class="mt-6">
-            <v-sheet color="white" elevation="1" rounded>
+            <!-- <v-sheet color="white" elevation="1" rounded>
                 <v-container fluid>
                     <v-sheet
                         color="primary"
                         height="50"
                         rounded
                         class="mt-n8"
-                        shaped>
+                        shaped
+                    >
                         <div class="py-3 pr-2 white--text" dack>
                             أحصائيات تواقيع وثائقي
                         </div>
@@ -251,7 +174,8 @@
                         loading-text="جاري تحميل أخر أجراءات وأحداث النظام "
                         hide-default-footer
                         no-data-text=" لا تـــــــوجــد بيانـــات حتى ألان"
-                        class="mt-4">
+                        class="mt-4"
+                    >
                         <template v-slot:[`item.created`]="{ item }">
                             <span dir="ltr">
                                 {{ item.created | formatDateAgo }}
@@ -259,7 +183,7 @@
                         </template>
                     </v-data-table>
                 </v-container>
-            </v-sheet>
+            </v-sheet> -->
         </div>
     </div>
 </template>
@@ -283,9 +207,9 @@ export default {
                     type: "pie"
                 },
                 labels: [
-                    " الوثائق المرفوعه ",
-                    " الوثائق الصادره ",
-                    " الوثائق الوارده "
+                    " الذمة في الشركه ",
+                    " الذمة الخاجيه ",
+                    " الذمة يجب ان تسلم "
                 ],
                 responsive: [
                     {
@@ -300,6 +224,89 @@ export default {
                         }
                     }
                 ]
+            },
+
+            series2: [
+                {
+                    name: "TEAM A",
+                    type: "column",
+                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+                },
+                {
+                    name: "TEAM B",
+                    type: "area",
+                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+                },
+                {
+                    name: "TEAM C",
+                    type: "line",
+                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+                }
+            ],
+            chartOptions2: {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: false
+                },
+                stroke: {
+                    width: [0, 2, 5],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+
+                fill: {
+                    opacity: [0.85, 0.25, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: [
+                    "01/01/2003",
+                    "02/01/2003",
+                    "03/01/2003",
+                    "04/01/2003",
+                    "05/01/2003",
+                    "06/01/2003",
+                    "07/01/2003",
+                    "08/01/2003",
+                    "09/01/2003",
+                    "10/01/2003",
+                    "11/01/2003"
+                ],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function(y) {
+                            if (typeof y !== "undefined") {
+                                return y.toFixed(0) + " points";
+                            }
+                            return y;
+                        }
+                    }
+                }
             },
 
             loadingDocShared: true,

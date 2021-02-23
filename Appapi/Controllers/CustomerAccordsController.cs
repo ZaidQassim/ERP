@@ -9,6 +9,7 @@ using Appapi.Data.Interfaces;
 using Appapi.Dtos.CustomerAccord;
 using Appapi.Dtos.Employe;
 using Appapi.Dtos.EmployeAccord;
+using Appapi.Helpers;
 using Appapi.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +34,41 @@ namespace Appapi.Controllers
             _customer = customer;
             _mapper = mapper;
             _context = context;
+        }
+
+        [HttpGet("getCustomerAccords")]
+        public async Task<IActionResult> GetCustomerAccords(int? skip, int? take)
+        {
+            if (!skip.HasValue) skip = 0;
+            if (!take.HasValue) take = 0;
+
+            var count = await _customer.Entity.Count();
+            var customerAccords = await _customer.Entity.GetAll(skip.Value, take.Value);
+            var customerAccordsToReturn = customerAccords.Select(ca => new {
+                ca.FirstName,
+                ca.SecondName,
+                ca.ThirdName,
+                ca.FourthName,
+                ca.Family,
+                ca.Gender,
+                telephoneNumber = _context.CustomerTelephoneNumbers
+                    .Where(t => t.CustomerId == ca.Id).FirstOrDefault().Number,
+                age = ca.DateOfBirth.CalculateAge(),
+                accord = _context.CustomerAccords.Where(t => t.CustomerId == ca.Id)
+                .Select(c => new {
+                    c.Type,
+                    c.SequenceNumber,
+                    c.DateOfReceiving,
+                    c.DateOfDelivery,
+                }).FirstOrDefault()
+            }).ToList();
+
+            return StatusCode(200, new
+            {
+                code = 200,
+                message = "getCustomerAccords successfuly",
+                result = new { customerAccordsToReturn, count }
+            });
         }
 
         [HttpGet("getCustomers")]

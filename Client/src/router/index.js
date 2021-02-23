@@ -23,7 +23,7 @@ const routes = [
     {
         path: "/employe",
         name: "أدارة الموظفين",
-        component: () => import("../components/Employe.vue"),
+        component: () => import("../views/Employe.vue"),
         meta: {
             requireAuth: true
         }
@@ -40,7 +40,15 @@ const routes = [
     {
         path: "/employeAccord",
         name: "أدارة ذمــة الموظفين",
-        component: () => import("../components/EmployeAccord.vue"),
+        component: () => import("../views/EmployeAccord.vue"),
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
+        path: "/customerAccord",
+        name: "أدارة ذمــة الخارجيه",
+        component: () => import("../views/CustomerAccord.vue"),
         meta: {
             requireAuth: true
         }
